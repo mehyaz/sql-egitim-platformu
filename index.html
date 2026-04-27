@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Türkçe interaktif SQL eğitim platformu. Sıfırdan ileri seviyeye SQL öğrenin. Gerçek veritabanlarında pratik yapın.">
+    <meta name="keywords" content="SQL, eğitim, öğren, Türkçe, veritabanı, sorgu, interaktif, online">
+    <meta name="author" content="SQL Eğitim Platformu">
+    <title>SQL Eğitim Platformu — Türkçe İnteraktif SQL Öğrenme</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- sql.js -->
+    <script src="https://cdn.jsdelivr.net/npm/sql.js@1.12.0/dist/sql-wasm.js"></script>
+
+    <!-- Favicon (inline SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗃️</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                </svg>
+            </div>
+            <h2>SQL Eğitim Platformu</h2>
+            <p class="loading-text">Veritabanları hazırlanıyor...</p>
+            <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app hidden">
+        <!-- Top Bar -->
+        <header id="top-bar" class="top-bar">
+            <div class="top-bar-left">
+                <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Menüyü aç/kapat">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+                <div class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                    </svg>
+                    <span>SQL Eğitim</span>
+                </div>
+            </div>
+            <nav class="top-bar-center">
+                <button id="tab-lessons" class="tab-btn active" data-tab="lessons">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    Dersler
+                </button>
+                <button id="tab-playground" class="tab-btn" data-tab="playground">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                    SQL Playground
+                </button>
+            </nav>
+            <div class="top-bar-right">
+                <div id="progress-badge" class="progress-badge" title="Genel İlerleme">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Müfredat</h3>
+                    <div class="progress-mini">
+                        <div id="progress-bar-mini" class="progress-bar-mini">
+                            <div id="progress-fill-mini" class="progress-fill-mini" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <nav id="curriculum-nav" class="curriculum-nav">
+                    <!-- Dynamically populated -->
+                </nav>
+            </aside>
+
+            <!-- Overlay for mobile sidebar -->
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+            <!-- Main Content -->
+            <main id="main-content" class="main-content">
+                <!-- Lessons View -->
+                <div id="lessons-view" class="view active-view">
+                    <!-- Welcome / Active Lesson -->
+                    <div id="lesson-container" class="lesson-container">
+                        <!-- Welcome screen (default) -->
+                        <div id="welcome-screen" class="welcome-screen">
+                            <div class="welcome-icon">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                </svg>
+                            </div>
+                            <h1>SQL Eğitim Platformuna Hoş Geldiniz!</h1>
+                            <p>Bu platform ile sıfırdan ileri seviyeye SQL öğreneceksiniz. Gerçek veritabanları üzerinde pratik yaparak öğrenin.</p>
+                            <div class="welcome-features">
+                                <div class="feature-card">
+                                    <div class="feature-icon">📚</div>
+                                    <h3>42+ Alıştırma</h3>
+                                    <p>Adım adım ilerleyen yapılandırılmış dersler</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🗃️</div>
+                                    <h3>3 Veritabanı</h3>
+                                    <p>Okul, E-Ticaret ve Kütüphane veritabanları</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">⚡</div>
+                                    <h3>Gerçek SQL</h3>
+                                    <p>Tarayıcınızda gerçek SQL sorguları çalıştırın</p>
+                                </div>
+                            </div>
+                            <button id="start-learning-btn" class="btn btn-primary btn-lg">
+                                İlk Derse Başla
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Active Lesson (hidden by default) -->
+                        <div id="active-lesson" class="active-lesson hidden">
+                            <div class="lesson-header">
+                                <div class="lesson-breadcrumb">
+                                    <span id="lesson-level-badge" class="level-badge">Başlangıç</span>
+                                    <span class="breadcrumb-sep">›</span>
+                                    <span id="lesson-topic-name">Konu Adı</span>
+                                </div>
+                                <h2 id="lesson-title">Ders Başlığı</h2>
+                            </div>
+
+                            <div class="lesson-body">
+                                <div class="lesson-description" id="lesson-description">
+                                    <!-- Lesson description -->
+                                </div>
+
+                                <div class="lesson-task" id="lesson-task-section">
+                                    <div class="task-header">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                        </svg>
+                                        <h3>Görev</h3>
+                                    </div>
+                                    <p id="lesson-task"></p>
+                                </div>
+
+                                <!-- Sample Tables -->
+                                <div id="lesson-sample-tables" class="sample-tables-section hidden">
+                                    <div class="section-header">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                            <line x1="3" y1="9" x2="21" y2="9"/>
+                                            <line x1="3" y1="15" x2="21" y2="15"/>
+                                            <line x1="9" y1="3" x2="9" y2="21"/>
+                                        </svg>
+                                        <h3>Örnek Tablo(lar)</h3>
+                                    </div>
+                                    <div id="sample-tables-content"></div>
+                                </div>
+
+                                <!-- SQL Editor Area -->
+                                <div class="editor-section">
+                                    <div class="editor-header">
+                                        <div class="editor-title">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="16 18 22 12 16 6"/>
+                                                <polyline points="8 6 2 12 8 18"/>
+                                            </svg>
+                                            <span>SQL Sorgunuz</span>
+                                        </div>
+                                        <span class="editor-hint">Ctrl+Enter ile çalıştır</span>
+                                    </div>
+                                    <div id="lesson-editor" class="code-editor"></div>
+                                    <div class="editor-actions">
+                                        <button id="btn-run-query" class="btn btn-primary">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polygon points="5 3 19 12 5 21 5 3"/>
+                                            </svg>
+                                            Sorguyu Çalıştır
+                                        </button>
+                                        <button id="btn-check-answer" class="btn btn-success">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                <polyline points="22 4 12 14.01 9 11.01"/>
+                                            </svg>
+                                            Cevabı Kontrol Et
+                                        </button>
+                                        <button id="btn-hint" class="btn btn-outline">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                            </svg>
+                                            İpucu
+                                        </button>
+                                        <button id="btn-solution" class="btn btn-outline btn-warning-outline">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                                <circle cx="12" cy="12" r="3"/>
+                                            </svg>
+                                            Çözümü Göster
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Feedback Area -->
+                                <div id="feedback-area" class="feedback-area hidden"></div>
+
+                                <!-- Query Result -->
+                                <div id="query-result" class="query-result hidden">
+                                    <div class="result-header">
+                                        <h3>Sorgu Sonucu</h3>
+                                        <span id="result-info" class="result-info"></span>
+                                    </div>
+                                    <div id="result-table-container" class="result-table-container"></div>
+                                </div>
+
+                                <!-- Expected Result -->
+                                <div id="expected-result" class="expected-result hidden">
+                                    <div class="result-header">
+                                        <h3>Beklenen Sonuç</h3>
+                                    </div>
+                                    <div id="expected-table-container" class="result-table-container"></div>
+                                </div>
+
+                                <!-- Navigation -->
+                                <div class="lesson-nav">
+                                    <button id="btn-prev-lesson" class="btn btn-outline" disabled>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+                                        </svg>
+                                        Önceki Ders
+                                    </button>
+                                    <button id="btn-next-lesson" class="btn btn-primary">
+                                        Sonraki Ders
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Playground View -->
+                <div id="playground-view" class="view">
+                    <div class="playground-container">
+                        <div class="playground-header">
+                            <h2>SQL Playground</h2>
+                            <p>Herhangi bir veritabanını seçin ve istediğiniz SQL sorgusunu çalıştırın.</p>
+                        </div>
+                        <div class="playground-toolbar">
+                            <div class="db-selector">
+                                <label for="playground-db-select">Veritabanı:</label>
+                                <select id="playground-db-select">
+                                    <option value="okul">🏫 Okul Veritabanı</option>
+                                    <option value="eticaret">🛒 E-Ticaret Veritabanı</option>
+                                    <option value="kutuphane">📚 Kütüphane Veritabanı</option>
+                                </select>
+                            </div>
+                            <button id="btn-reset-db" class="btn btn-outline btn-sm" title="Veritabanını sıfırla">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10"/>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                                </svg>
+                                Sıfırla
+                            </button>
+                        </div>
+                        <div class="playground-body">
+                            <div class="playground-left">
+                                <!-- Schema Explorer -->
+                                <div class="schema-explorer">
+                                    <div class="schema-header">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                        </svg>
+                                        <h4>Tablo Şeması</h4>
+                                    </div>
+                                    <div id="schema-content" class="schema-content">
+                                        <!-- Dynamically populated -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="playground-right">
+                                <div class="editor-section">
+                                    <div class="editor-header">
+                                        <div class="editor-title">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="16 18 22 12 16 6"/>
+                                                <polyline points="8 6 2 12 8 18"/>
+                                            </svg>
+                                            <span>SQL Sorgunuz</span>
+                                        </div>
+                                        <span class="editor-hint">Ctrl+Enter ile çalıştır</span>
+                                    </div>
+                                    <div id="playground-editor" class="code-editor"></div>
+                                    <div class="editor-actions">
+                                        <button id="btn-playground-run" class="btn btn-primary">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polygon points="5 3 19 12 5 21 5 3"/>
+                                            </svg>
+                                            Sorguyu Çalıştır
+                                        </button>
+                                        <button id="btn-playground-clear" class="btn btn-outline btn-sm">Temizle</button>
+                                    </div>
+                                </div>
+
+                                <!-- Playground Result -->
+                                <div id="playground-result" class="query-result hidden">
+                                    <div class="result-header">
+                                        <h3>Sorgu Sonucu</h3>
+                                        <span id="playground-result-info" class="result-info"></span>
+                                    </div>
+                                    <div id="playground-table-container" class="result-table-container"></div>
+                                </div>
+
+                                <!-- Playground Feedback -->
+                                <div id="playground-feedback" class="feedback-area hidden"></div>
+
+                                <!-- Query History -->
+                                <div id="query-history" class="query-history hidden">
+                                    <div class="history-header">
+                                        <h4>Sorgu Geçmişi</h4>
+                                        <button id="btn-clear-history" class="btn btn-outline btn-xs">Temizle</button>
+                                    </div>
+                                    <div id="history-list" class="history-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- App Scripts (ES Modules) -->
+    <script src="js/curriculum/beginner.js"></script>
+    <script src="js/curriculum/intermediate.js"></script>
+    <script src="js/curriculum/advanced.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/schema.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/lessons.js"></script>
+    <script src="js/playground.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
