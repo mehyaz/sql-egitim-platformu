@@ -1,253 +1,151 @@
-// ========== INTERMEDIATE CURRICULUM ==========
+// ========== INTERMEDIATE CURRICULUM (MEB Sayfa 225-232) ==========
 const IntermediateLessons = [
-    {
-        id: "9.1", topicId: 9, level: "intermediate",
-        title: "Karşılaştırma Operatörleri — Temel",
-        topicTitle: "Karşılaştırma Operatörleri",
-        description: `Karşılaştırma operatörleri WHERE ile birlikte kullanılarak verileri filtrelemek için kullanılır:<br><br>
-• <code>=</code> Eşit<br>• <code>!=</code> veya <code>&lt;&gt;</code> Eşit değil<br>
-• <code>&lt;</code> Küçük<br>• <code>&gt;</code> Büyük<br>
-• <code>&lt;=</code> Küçük eşit<br>• <code>&gt;=</code> Büyük eşit`,
-        task: "Notlar tablosundan ortalaması 80'den büyük olan kayıtları listeleyin.",
-        database: "okul",
-        initialCode: "",
-        hints: ["SELECT * FROM notlar WHERE ... şeklinde başlayın.", "ortalama > 80 koşulunu kullanın."],
-        solution: "SELECT * FROM notlar WHERE ortalama > 80;",
-        expectedQuery: "SELECT * FROM notlar WHERE ortalama > 80;",
-        checkType: "result"
-    },
-    {
-        id: "9.2", topicId: 9, level: "intermediate",
-        title: "Karşılaştırma Operatörleri — BETWEEN ve IN",
-        topicTitle: "Karşılaştırma Operatörleri",
-        description: `<code>BETWEEN</code> bir aralıktaki değerleri filtreler:<br>
-<code>WHERE fiyat BETWEEN 50 AND 100</code><br><br>
-<code>IN</code> belirli değerlerden birini kontrol eder:<br>
-<code>WHERE sehir IN ('İstanbul', 'Ankara')</code>`,
-        task: "Ürünler tablosundan fiyatı 100 ile 1000 TL arasında olan ürünleri listeleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["BETWEEN operatörünü kullanın.", "WHERE fiyat BETWEEN 100 AND 1000"],
-        solution: "SELECT * FROM urunler WHERE fiyat BETWEEN 100 AND 1000;",
-        expectedQuery: "SELECT * FROM urunler WHERE fiyat BETWEEN 100 AND 1000;",
-        checkType: "result"
-    },
-    {
-        id: "10.1", topicId: 10, level: "intermediate",
-        title: "WHERE — Temel Filtreleme",
-        topicTitle: "WHERE Şart İfadesi",
-        description: `<code>WHERE</code> ifadesi sorgu sonuçlarını filtrelemek için kullanılır. SELECT, UPDATE ve DELETE komutlarıyla birlikte çalışır.<br><br>
-<code>SELECT * FROM tablo WHERE koşul;</code>`,
-        task: "Müşteriler tablosundan İstanbul'da yaşayan müşterileri listeleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["WHERE sehir = '...' şeklinde yazın.", "Metin değerlerini tek tırnak içinde yazın."],
-        solution: "SELECT * FROM musteriler WHERE sehir = 'İstanbul';",
-        expectedQuery: "SELECT * FROM musteriler WHERE sehir = 'İstanbul';",
-        checkType: "result"
-    },
-    {
-        id: "10.2", topicId: 10, level: "intermediate",
-        title: "WHERE — Birden Fazla Koşul",
-        topicTitle: "WHERE Şart İfadesi",
-        description: `WHERE ile birden fazla koşul kullanabilirsiniz. Koşulları <code>AND</code> veya <code>OR</code> ile bağlayın.<br><br>
-<code>WHERE koşul1 AND koşul2</code>`,
-        task: "Siparişler tablosundan durumu 'Teslim Edildi' olan ve toplam tutarı 1000 TL'den büyük olan siparişleri listeleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["İki koşulu AND ile bağlayın.", "WHERE durum = 'Teslim Edildi' AND toplam_tutar > 1000"],
-        solution: "SELECT * FROM siparisler WHERE durum = 'Teslim Edildi' AND toplam_tutar > 1000;",
-        expectedQuery: "SELECT * FROM siparisler WHERE durum = 'Teslim Edildi' AND toplam_tutar > 1000;",
-        checkType: "result"
-    },
-    {
-        id: "11.1", topicId: 11, level: "intermediate",
-        title: "Mantıksal Operatörler — AND, OR",
-        topicTitle: "Mantıksal Operatörler",
-        description: `Mantıksal operatörler birden fazla koşulu birleştirmek için kullanılır:<br><br>
-• <code>AND</code> — Her iki koşul da doğru olmalı<br>
-• <code>OR</code> — Koşullardan en az biri doğru olmalı<br>
-• <code>NOT</code> — Koşulun tersini alır`,
-        task: "Ürünler tablosundan kategori_id'si 1 (Elektronik) VEYA 5 (Spor) olan ürünleri listeleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["WHERE ... OR ... kullanın.", "kategori_id = 1 OR kategori_id = 5"],
-        solution: "SELECT * FROM urunler WHERE kategori_id = 1 OR kategori_id = 5;",
-        expectedQuery: "SELECT * FROM urunler WHERE kategori_id = 1 OR kategori_id = 5;",
-        checkType: "result"
-    },
-    {
-        id: "11.2", topicId: 11, level: "intermediate",
-        title: "Mantıksal Operatörler — NOT",
-        topicTitle: "Mantıksal Operatörler",
-        description: `<code>NOT</code> operatörü bir koşulun tersini alır:<br><br>
-<code>WHERE NOT koşul</code><br>
-<code>WHERE sütun NOT IN (değer1, değer2)</code><br>
-<code>WHERE sütun NOT BETWEEN a AND b</code>`,
-        task: "Ürünler tablosundan kategorisi 'Kitap' (kategori_id = 3) OLMAYAN ürünleri listeleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["WHERE kategori_id != 3 veya WHERE NOT kategori_id = 3 kullanın.", "!= ve <> aynı anlama gelir."],
-        solution: "SELECT * FROM urunler WHERE kategori_id != 3;",
-        expectedQuery: "SELECT * FROM urunler WHERE kategori_id != 3;",
-        checkType: "result"
-    },
-    {
-        id: "12.1", topicId: 12, level: "intermediate",
-        title: "Hesaplama Fonksiyonları — COUNT, SUM",
-        topicTitle: "Hesaplama Fonksiyonları",
-        description: `SQL'de toplama (aggregate) fonksiyonları verileri özetlemek için kullanılır:<br><br>
-• <code>COUNT(*)</code> — Satır sayısını sayar<br>
-• <code>SUM(sütun)</code> — Değerlerin toplamını hesaplar<br>
-• <code>COUNT(DISTINCT sütun)</code> — Benzersiz değerleri sayar`,
-        task: "Siparişler tablosundaki toplam sipariş sayısını ve toplam tutarların toplamını hesaplayın.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["SELECT COUNT(*), SUM(toplam_tutar) FROM ... kullanın.", "Sütunlara AS ile takma ad verebilirsiniz."],
-        solution: "SELECT COUNT(*) AS siparis_sayisi, SUM(toplam_tutar) AS toplam FROM siparisler;",
-        expectedQuery: "SELECT COUNT(*) AS siparis_sayisi, SUM(toplam_tutar) AS toplam FROM siparisler;",
-        checkType: "result"
-    },
-    {
-        id: "12.2", topicId: 12, level: "intermediate",
-        title: "Hesaplama Fonksiyonları — AVG, MIN, MAX",
-        topicTitle: "Hesaplama Fonksiyonları",
-        description: `Diğer önemli toplama fonksiyonları:<br><br>
-• <code>AVG(sütun)</code> — Ortalama değer<br>
-• <code>MIN(sütun)</code> — En küçük değer<br>
-• <code>MAX(sütun)</code> — En büyük değer`,
-        task: "Notlar tablosundan ortalama notu (ortalama sütunu), en düşük ve en yüksek ortalamayı hesaplayın.",
-        database: "okul",
-        initialCode: "",
-        hints: ["SELECT AVG(...), MIN(...), MAX(...) FROM ... kullanın.", "Sütun adı 'ortalama' dır."],
-        solution: "SELECT AVG(ortalama) AS ort, MIN(ortalama) AS en_dusuk, MAX(ortalama) AS en_yuksek FROM notlar;",
-        expectedQuery: "SELECT AVG(ortalama) AS ort, MIN(ortalama) AS en_dusuk, MAX(ortalama) AS en_yuksek FROM notlar;",
-        checkType: "result"
-    },
-    {
-        id: "12.3", topicId: 12, level: "intermediate",
-        title: "Hesaplama Fonksiyonları — GROUP BY",
-        topicTitle: "Hesaplama Fonksiyonları",
-        description: `<code>GROUP BY</code> verileri gruplandırarak her grup için ayrı hesaplama yapar:<br><br>
-<code>SELECT sütun, COUNT(*) FROM tablo GROUP BY sütun;</code><br><br>
-<code>HAVING</code> ise GROUP BY sonuçlarını filtrelemek için kullanılır.`,
-        task: "Ürünler tablosunda her kategoride kaç ürün olduğunu bulun. Kategori ID'sine göre gruplandırın.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["SELECT kategori_id, COUNT(*) FROM ... GROUP BY ... kullanın.", "GROUP BY kategori_id yazın."],
-        solution: "SELECT kategori_id, COUNT(*) AS urun_sayisi FROM urunler GROUP BY kategori_id;",
-        expectedQuery: "SELECT kategori_id, COUNT(*) AS urun_sayisi FROM urunler GROUP BY kategori_id;",
-        checkType: "result"
-    },
-    {
-        id: "13.1", topicId: 13, level: "intermediate",
-        title: "LIKE — Temel Arama",
-        topicTitle: "LIKE Komutu",
-        description: `<code>LIKE</code> operatörü metin arama için kullanılır. Joker karakterler:<br><br>
-• <code>%</code> — Sıfır veya daha fazla karakter<br>
-• <code>_</code> — Tam olarak bir karakter<br><br>
-<code>WHERE ad LIKE 'A%'</code> → A ile başlayanlar<br>
-<code>WHERE ad LIKE '%kan'</code> → 'kan' ile bitenler<br>
-<code>WHERE ad LIKE '%met%'</code> → İçinde 'met' geçenler`,
-        task: "Yazarlar tablosundan soyadı 'A' harfi ile başlayan yazarları bulun.",
-        database: "kutuphane",
-        initialCode: "",
-        hints: ["WHERE soyad LIKE 'A%' kullanın.", "% işareti sıfır veya daha fazla karakter anlamına gelir."],
-        solution: "SELECT * FROM yazarlar WHERE soyad LIKE 'A%';",
-        expectedQuery: "SELECT * FROM yazarlar WHERE soyad LIKE 'A%';",
-        checkType: "result"
-    },
-    {
-        id: "13.2", topicId: 13, level: "intermediate",
-        title: "LIKE — İleri Arama",
-        topicTitle: "LIKE Komutu",
-        description: `LIKE operatörü ile daha karmaşık aramalar yapabilirsiniz:<br><br>
-<code>'_a%'</code> → İkinci harfi 'a' olanlar<br>
-<code>'%an%'</code> → İçinde 'an' geçenler<br>
-<code>'___'</code> → Tam 3 karakter uzunluğundakiler`,
-        task: "Kitaplar tablosundan başlığında 'Mantolu' geçen kitapları bulun.",
-        database: "kutuphane",
-        initialCode: "",
-        hints: ["WHERE baslik LIKE '%...%' kalıbını kullanın.", "'Mantolu' kelimesini % işaretleri arasına yazın."],
-        solution: "SELECT * FROM kitaplar WHERE baslik LIKE '%Mantolu%';",
-        expectedQuery: "SELECT * FROM kitaplar WHERE baslik LIKE '%Mantolu%';",
-        checkType: "result"
-    },
-    {
-        id: "14.1", topicId: 14, level: "intermediate",
-        title: "ORDER BY — Tek Sütun Sıralama",
-        topicTitle: "ORDER BY Komutu",
-        description: `<code>ORDER BY</code> sorgu sonuçlarını sıralamak için kullanılır:<br><br>
-• <code>ASC</code> — Küçükten büyüğe (varsayılan)<br>
-• <code>DESC</code> — Büyükten küçüğe<br><br>
-<code>SELECT * FROM tablo ORDER BY sütun DESC;</code>`,
-        task: "Kitaplar tablosundaki kitapları yayın yılına göre en yeniden en eskiye sıralayın.",
-        database: "kutuphane",
-        initialCode: "",
-        hints: ["ORDER BY yayin_yili DESC kullanın.", "DESC büyükten küçüğe sıralama yapar."],
-        solution: "SELECT * FROM kitaplar ORDER BY yayin_yili DESC;",
-        expectedQuery: "SELECT * FROM kitaplar ORDER BY yayin_yili DESC;",
-        checkType: "result"
-    },
-    {
-        id: "14.2", topicId: 14, level: "intermediate",
-        title: "ORDER BY — Çoklu Sıralama ve LIMIT",
-        topicTitle: "ORDER BY Komutu",
-        description: `Birden fazla sütuna göre sıralama yapabilir ve <code>LIMIT</code> ile sonuç sayısını sınırlayabilirsiniz:<br><br>
-<code>SELECT * FROM tablo ORDER BY sütun1 ASC, sütun2 DESC LIMIT 5;</code>`,
-        task: "Ürünler tablosundaki ürünleri fiyata göre en pahalıdan en ucuza sıralayın ve sadece ilk 5 tanesini gösterin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["ORDER BY fiyat DESC LIMIT 5 kullanın.", "LIMIT sorgunun en sonuna yazılır."],
-        solution: "SELECT * FROM urunler ORDER BY fiyat DESC LIMIT 5;",
-        expectedQuery: "SELECT * FROM urunler ORDER BY fiyat DESC LIMIT 5;",
-        checkType: "result"
-    },
-    {
-        id: "15.1", topicId: 15, level: "intermediate",
-        title: "UPDATE — Tek Kayıt Güncelleme",
-        topicTitle: "UPDATE Komutu",
-        description: `<code>UPDATE</code> mevcut verileri güncellemek için kullanılır:<br><br>
-<code>UPDATE tablo SET sütun = yeni_değer WHERE koşul;</code><br><br>
-⚠️ <strong>WHERE olmadan UPDATE yaparsanız tüm satırlar güncellenir!</strong>`,
-        task: "Ürünler tablosunda 'Akıllı Telefon X' ürününün fiyatını 9499.99 olarak güncelleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["UPDATE urunler SET fiyat = ... WHERE ... kullanın.", "WHERE urun_adi = 'Akıllı Telefon X' koşulunu ekleyin."],
-        solution: "UPDATE urunler SET fiyat = 9499.99 WHERE urun_adi = 'Akıllı Telefon X';",
-        checkType: "contains-value",
-        checkQuery: "SELECT fiyat FROM urunler WHERE urun_adi = 'Akıllı Telefon X';",
-        checkValue: "9499.99"
-    },
-    {
-        id: "15.2", topicId: 15, level: "intermediate",
-        title: "UPDATE — Koşullu Güncelleme",
-        topicTitle: "UPDATE Komutu",
-        description: `Birden fazla kaydı koşula göre güncelleyebilirsiniz. Birden fazla sütunu da aynı anda güncelleyebilirsiniz:<br><br>
-<code>UPDATE tablo SET sütun1 = değer1, sütun2 = değer2 WHERE koşul;</code>`,
-        task: "Ürünler tablosunda kategorisi 'Spor' (kategori_id = 5) olan tüm ürünlerin stokunu 100 olarak güncelleyin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["UPDATE urunler SET stok = 100 WHERE ... kullanın.", "WHERE kategori_id = 5 koşulunu yazın."],
-        solution: "UPDATE urunler SET stok = 100 WHERE kategori_id = 5;",
-        checkType: "contains-value",
-        checkQuery: "SELECT stok FROM urunler WHERE kategori_id = 5;",
-        checkValue: "100"
-    },
-    {
-        id: "16.1", topicId: 16, level: "intermediate",
-        title: "DELETE — Kayıt Silme",
-        topicTitle: "DELETE Komutu",
-        description: `<code>DELETE</code> komutu tablodaki kayıtları silmek için kullanılır:<br><br>
-<code>DELETE FROM tablo WHERE koşul;</code><br><br>
-⚠️ <strong>WHERE olmadan DELETE yaparsanız tablodaki TÜM veriler silinir!</strong>`,
-        task: "Siparişler tablosundan durumu 'İptal Edildi' olan siparişleri silin.",
-        database: "eticaret",
-        initialCode: "",
-        hints: ["DELETE FROM siparisler WHERE ... kullanın.", "WHERE durum = 'İptal Edildi' yazın."],
-        solution: "DELETE FROM siparisler WHERE durum = 'İptal Edildi';",
-        checkType: "run-check",
-        checkQuery: "SELECT COUNT(*) as sayi FROM siparisler WHERE durum = 'İptal Edildi';",
-        checkValue: "0"
-    }
+    // ===== KONU 9: KARŞILAŞTIRMA OPERATÖRLERİ =====
+    {id:"9.1",topicId:9,level:"intermediate",title:"Karşılaştırma — Büyük/Küçük",topicTitle:"Karşılaştırma Operatörleri",
+     description:`Karşılaştırma operatörleri WHERE ile kullanılır:<br><br>• <code>=</code> Eşit<br>• <code>!=</code> veya <code>&lt;&gt;</code> Eşit değil<br>• <code>&lt;</code> Küçük, <code>&gt;</code> Büyük<br>• <code>&lt;=</code> Küçük eşit, <code>&gt;=</code> Büyük eşit`,
+     task:"Notlar tablosundan ortalaması 80'den büyük olan kayıtları listeleyin.",database:"okul",initialCode:"",
+     hints:["SELECT * FROM notlar WHERE ... şeklinde başlayın.","ortalama > 80 koşulunu kullanın."],
+     solution:"SELECT * FROM notlar WHERE ortalama > 80;",expectedQuery:"SELECT * FROM notlar WHERE ortalama > 80;",checkType:"result"},
+    {id:"9.2",topicId:9,level:"intermediate",title:"Karşılaştırma — Eşitlik ve Eşitsizlik",topicTitle:"Karşılaştırma Operatörleri",
+     description:`<code>=</code> eşitlik, <code>!=</code> veya <code>&lt;&gt;</code> eşitsizlik kontrolü yapar:<br><br><code>WHERE sehir = 'Ankara'</code><br><code>WHERE bolum_id != 1</code>`,
+     task:"Öğrenciler tablosundan şehri 'İstanbul' olmayan öğrencileri listeleyin.",database:"okul",initialCode:"",
+     hints:["WHERE sehir != 'İstanbul' kullanın.","!= ve <> aynı anlama gelir."],
+     solution:"SELECT * FROM ogrenciler WHERE sehir != 'İstanbul';",expectedQuery:"SELECT * FROM ogrenciler WHERE sehir != 'İstanbul';",checkType:"result"},
+    {id:"9.3",topicId:9,level:"intermediate",title:"Karşılaştırma — BETWEEN",topicTitle:"Karşılaştırma Operatörleri",
+     description:`<code>BETWEEN</code> bir aralıktaki değerleri filtreler:<br><br><code>WHERE fiyat BETWEEN 50 AND 100</code><br>50 ve 100 dahildir.`,
+     task:"Ürünler tablosundan fiyatı 100 ile 1000 TL arasında olan ürünleri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["BETWEEN operatörünü kullanın.","WHERE fiyat BETWEEN 100 AND 1000"],
+     solution:"SELECT * FROM urunler WHERE fiyat BETWEEN 100 AND 1000;",expectedQuery:"SELECT * FROM urunler WHERE fiyat BETWEEN 100 AND 1000;",checkType:"result"},
+    {id:"9.4",topicId:9,level:"intermediate",title:"Karşılaştırma — IN",topicTitle:"Karşılaştırma Operatörleri",
+     description:`<code>IN</code> belirli değerlerden birini kontrol eder:<br><br><code>WHERE sehir IN ('İstanbul', 'Ankara', 'İzmir')</code>`,
+     task:"Müşteriler tablosundan şehri İstanbul, Ankara veya İzmir olan müşterileri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["WHERE sehir IN (...) kullanın.","Şehir adlarını tek tırnak içinde yazın."],
+     solution:"SELECT * FROM musteriler WHERE sehir IN ('İstanbul', 'Ankara', 'İzmir');",expectedQuery:"SELECT * FROM musteriler WHERE sehir IN ('İstanbul', 'Ankara', 'İzmir');",checkType:"result"},
+    // ===== KONU 10: WHERE ŞART İFADESİ =====
+    {id:"10.1",topicId:10,level:"intermediate",title:"WHERE — Metin Filtreleme",topicTitle:"WHERE Şart İfadesi",
+     description:`<code>WHERE</code> sorgu sonuçlarını filtreler. SELECT, UPDATE ve DELETE ile çalışır:<br><br><code>SELECT * FROM tablo WHERE koşul;</code>`,
+     task:"Müşteriler tablosundan İstanbul'da yaşayan müşterileri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["WHERE sehir = '...' şeklinde yazın.","Metin değerlerini tek tırnak içinde yazın."],
+     solution:"SELECT * FROM musteriler WHERE sehir = 'İstanbul';",expectedQuery:"SELECT * FROM musteriler WHERE sehir = 'İstanbul';",checkType:"result"},
+    {id:"10.2",topicId:10,level:"intermediate",title:"WHERE — Sayısal Filtreleme",topicTitle:"WHERE Şart İfadesi",
+     description:`WHERE ile sayısal değerler de filtrelenebilir:<br><br><code>WHERE fiyat > 500</code><br><code>WHERE stok <= 20</code>`,
+     task:"Ürünler tablosundan stoku 50'den az olan ürünleri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["WHERE stok < 50 kullanın.","Sayısal değerlerde tırnak kullanmayın."],
+     solution:"SELECT * FROM urunler WHERE stok < 50;",expectedQuery:"SELECT * FROM urunler WHERE stok < 50;",checkType:"result"},
+    {id:"10.3",topicId:10,level:"intermediate",title:"WHERE — Birden Fazla Koşul",topicTitle:"WHERE Şart İfadesi",
+     description:`WHERE ile birden fazla koşul kullanabilirsiniz:<br><br><code>WHERE koşul1 AND koşul2</code>`,
+     task:"Siparişler tablosundan durumu 'Teslim Edildi' olan ve toplam tutarı 1000 TL'den büyük olan siparişleri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["İki koşulu AND ile bağlayın.","WHERE durum = 'Teslim Edildi' AND toplam_tutar > 1000"],
+     solution:"SELECT * FROM siparisler WHERE durum = 'Teslim Edildi' AND toplam_tutar > 1000;",expectedQuery:"SELECT * FROM siparisler WHERE durum = 'Teslim Edildi' AND toplam_tutar > 1000;",checkType:"result"},
+    // ===== KONU 11: MANTIKSAL OPERATÖRLER =====
+    {id:"11.1",topicId:11,level:"intermediate",title:"Mantıksal Operatörler — AND",topicTitle:"Mantıksal Operatörler",
+     description:`<code>AND</code> — Her iki koşul da doğru olmalıdır:<br><br><code>WHERE fiyat > 100 AND stok > 0</code>`,
+     task:"Ürünler tablosundan fiyatı 500 TL'den büyük VE stoku 50'den fazla olan ürünleri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["WHERE fiyat > 500 AND stok > 50 kullanın.","AND her iki koşulun da doğru olmasını ister."],
+     solution:"SELECT * FROM urunler WHERE fiyat > 500 AND stok > 50;",expectedQuery:"SELECT * FROM urunler WHERE fiyat > 500 AND stok > 50;",checkType:"result"},
+    {id:"11.2",topicId:11,level:"intermediate",title:"Mantıksal Operatörler — OR",topicTitle:"Mantıksal Operatörler",
+     description:`<code>OR</code> — Koşullardan en az biri doğru olmalıdır:<br><br><code>WHERE sehir = 'İstanbul' OR sehir = 'Ankara'</code>`,
+     task:"Ürünler tablosundan kategori_id'si 1 (Elektronik) VEYA 5 (Spor) olan ürünleri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["WHERE ... OR ... kullanın.","kategori_id = 1 OR kategori_id = 5"],
+     solution:"SELECT * FROM urunler WHERE kategori_id = 1 OR kategori_id = 5;",expectedQuery:"SELECT * FROM urunler WHERE kategori_id = 1 OR kategori_id = 5;",checkType:"result"},
+    {id:"11.3",topicId:11,level:"intermediate",title:"Mantıksal Operatörler — NOT",topicTitle:"Mantıksal Operatörler",
+     description:`<code>NOT</code> bir koşulun tersini alır:<br><br><code>WHERE NOT koşul</code><br><code>WHERE sütun NOT IN (değer1, değer2)</code><br><code>WHERE sütun NOT BETWEEN a AND b</code>`,
+     task:"Ürünler tablosundan kategorisi Kitap (kategori_id = 3) OLMAYAN ürünleri listeleyin.",database:"eticaret",initialCode:"",
+     hints:["WHERE kategori_id != 3 veya WHERE NOT kategori_id = 3","!= ve <> aynı anlama gelir."],
+     solution:"SELECT * FROM urunler WHERE kategori_id != 3;",expectedQuery:"SELECT * FROM urunler WHERE kategori_id != 3;",checkType:"result"},
+    // ===== KONU 12: HESAPLAMA FONKSİYONLARI =====
+    {id:"12.1",topicId:12,level:"intermediate",title:"Hesaplama — COUNT",topicTitle:"Hesaplama Fonksiyonları",
+     description:`<code>COUNT(*)</code> satır sayısını sayar:<br><br><code>SELECT COUNT(*) FROM tablo;</code><br><code>COUNT(DISTINCT sütun)</code> benzersiz değerleri sayar.`,
+     task:"Siparişler tablosundaki toplam sipariş sayısını hesaplayın.",database:"eticaret",initialCode:"",
+     hints:["SELECT COUNT(*) FROM siparisler; kullanın.","AS ile takma ad verebilirsiniz."],
+     solution:"SELECT COUNT(*) AS siparis_sayisi FROM siparisler;",expectedQuery:"SELECT COUNT(*) AS siparis_sayisi FROM siparisler;",checkType:"result"},
+    {id:"12.2",topicId:12,level:"intermediate",title:"Hesaplama — SUM",topicTitle:"Hesaplama Fonksiyonları",
+     description:`<code>SUM(sütun)</code> değerlerin toplamını hesaplar:<br><br><code>SELECT SUM(fiyat) FROM urunler;</code>`,
+     task:"Siparişler tablosundaki toplam tutarların toplamını hesaplayın.",database:"eticaret",initialCode:"",
+     hints:["SELECT SUM(toplam_tutar) FROM siparisler;","AS ile 'toplam' takma adı verin."],
+     solution:"SELECT SUM(toplam_tutar) AS toplam FROM siparisler;",expectedQuery:"SELECT SUM(toplam_tutar) AS toplam FROM siparisler;",checkType:"result"},
+    {id:"12.3",topicId:12,level:"intermediate",title:"Hesaplama — AVG",topicTitle:"Hesaplama Fonksiyonları",
+     description:`<code>AVG(sütun)</code> ortalama değeri hesaplar:<br><br><code>SELECT AVG(ortalama) FROM notlar;</code>`,
+     task:"Notlar tablosundaki genel ortalama notu hesaplayın.",database:"okul",initialCode:"",
+     hints:["SELECT AVG(ortalama) FROM notlar;","AS ile 'genel_ortalama' adı verin."],
+     solution:"SELECT AVG(ortalama) AS genel_ortalama FROM notlar;",expectedQuery:"SELECT AVG(ortalama) AS genel_ortalama FROM notlar;",checkType:"result"},
+    {id:"12.4",topicId:12,level:"intermediate",title:"Hesaplama — MIN ve MAX",topicTitle:"Hesaplama Fonksiyonları",
+     description:`<code>MIN(sütun)</code> en küçük, <code>MAX(sütun)</code> en büyük değeri bulur:<br><br><code>SELECT MIN(fiyat), MAX(fiyat) FROM urunler;</code>`,
+     task:"Ürünler tablosundaki en ucuz ve en pahalı ürünün fiyatını bulun.",database:"eticaret",initialCode:"",
+     hints:["SELECT MIN(fiyat), MAX(fiyat) FROM urunler;","AS ile takma ad verin."],
+     solution:"SELECT MIN(fiyat) AS en_ucuz, MAX(fiyat) AS en_pahali FROM urunler;",expectedQuery:"SELECT MIN(fiyat) AS en_ucuz, MAX(fiyat) AS en_pahali FROM urunler;",checkType:"result"},
+    {id:"12.5",topicId:12,level:"intermediate",title:"Hesaplama — GROUP BY",topicTitle:"Hesaplama Fonksiyonları",
+     description:`<code>GROUP BY</code> verileri gruplandırarak her grup için ayrı hesaplama yapar:<br><br><code>SELECT sütun, COUNT(*) FROM tablo GROUP BY sütun;</code>`,
+     task:"Ürünler tablosunda her kategoride kaç ürün olduğunu bulun.",database:"eticaret",initialCode:"",
+     hints:["SELECT kategori_id, COUNT(*) FROM ... GROUP BY ...","GROUP BY kategori_id yazın."],
+     solution:"SELECT kategori_id, COUNT(*) AS urun_sayisi FROM urunler GROUP BY kategori_id;",expectedQuery:"SELECT kategori_id, COUNT(*) AS urun_sayisi FROM urunler GROUP BY kategori_id;",checkType:"result"},
+    {id:"12.6",topicId:12,level:"intermediate",title:"Hesaplama — HAVING",topicTitle:"Hesaplama Fonksiyonları",
+     description:`<code>HAVING</code> GROUP BY sonuçlarını filtreler (WHERE gibi ama gruplar için):<br><br><code>SELECT sütun, COUNT(*) FROM tablo GROUP BY sütun HAVING COUNT(*) > 3;</code>`,
+     task:"Her şehirden kaç öğrenci olduğunu bulun. Sadece 2'den fazla öğrencisi olan şehirleri gösterin.",database:"okul",initialCode:"",
+     hints:["GROUP BY sehir HAVING COUNT(*) > 2","HAVING, GROUP BY'dan sonra yazılır."],
+     solution:"SELECT sehir, COUNT(*) AS ogrenci_sayisi FROM ogrenciler GROUP BY sehir HAVING COUNT(*) > 2;",expectedQuery:"SELECT sehir, COUNT(*) AS ogrenci_sayisi FROM ogrenciler GROUP BY sehir HAVING COUNT(*) > 2;",checkType:"result"},
+    // ===== KONU 13: LIKE KOMUTU =====
+    {id:"13.1",topicId:13,level:"intermediate",title:"LIKE — % ile Başlangıç Araması",topicTitle:"LIKE Komutu",
+     description:`<code>LIKE</code> metin arama için kullanılır. <code>%</code> sıfır veya daha fazla karakter:<br><br><code>WHERE ad LIKE 'A%'</code> → A ile başlayanlar`,
+     task:"Yazarlar tablosundan soyadı 'A' harfi ile başlayan yazarları bulun.",database:"kutuphane",initialCode:"",
+     hints:["WHERE soyad LIKE 'A%' kullanın.","% sıfır veya daha fazla karakter demektir."],
+     solution:"SELECT * FROM yazarlar WHERE soyad LIKE 'A%';",expectedQuery:"SELECT * FROM yazarlar WHERE soyad LIKE 'A%';",checkType:"result"},
+    {id:"13.2",topicId:13,level:"intermediate",title:"LIKE — % ile İçerik Araması",topicTitle:"LIKE Komutu",
+     description:`<code>%kelime%</code> kalıbı, içinde 'kelime' geçenleri bulur:<br><br><code>WHERE baslik LIKE '%Roman%'</code>`,
+     task:"Kitaplar tablosundan başlığında 'Mantolu' geçen kitapları bulun.",database:"kutuphane",initialCode:"",
+     hints:["WHERE baslik LIKE '%...%' kalıbını kullanın.","'Mantolu' kelimesini % arasına yazın."],
+     solution:"SELECT * FROM kitaplar WHERE baslik LIKE '%Mantolu%';",expectedQuery:"SELECT * FROM kitaplar WHERE baslik LIKE '%Mantolu%';",checkType:"result"},
+    {id:"13.3",topicId:13,level:"intermediate",title:"LIKE — _ ile Tek Karakter Araması",topicTitle:"LIKE Komutu",
+     description:`<code>_</code> (alt çizgi) tam olarak bir karakter anlamına gelir:<br><br><code>'_a%'</code> → İkinci harfi 'a' olanlar<br><code>'___'</code> → Tam 3 karakter uzunluğundakiler`,
+     task:"Ürünler tablosundan adı tam 10 karakter uzunluğunda olan ürünleri bulun.",database:"eticaret",initialCode:"",
+     hints:["WHERE urun_adi LIKE '__________' (10 tane _)","Her _ tam bir karakter temsil eder."],
+     solution:"SELECT * FROM urunler WHERE urun_adi LIKE '__________';",expectedQuery:"SELECT * FROM urunler WHERE urun_adi LIKE '__________';",checkType:"result"},
+    // ===== KONU 14: ORDER BY KOMUTU =====
+    {id:"14.1",topicId:14,level:"intermediate",title:"ORDER BY — ASC (Küçükten Büyüğe)",topicTitle:"ORDER BY Komutu",
+     description:`<code>ORDER BY</code> sıralama yapar. <code>ASC</code> küçükten büyüğe (varsayılan):<br><br><code>SELECT * FROM tablo ORDER BY sütun ASC;</code>`,
+     task:"Ürünler tablosunu fiyata göre en ucuzdan en pahalıya sıralayın.",database:"eticaret",initialCode:"",
+     hints:["ORDER BY fiyat ASC kullanın.","ASC yazmasanız da varsayılan küçükten büyüğedir."],
+     solution:"SELECT * FROM urunler ORDER BY fiyat ASC;",expectedQuery:"SELECT * FROM urunler ORDER BY fiyat ASC;",checkType:"result"},
+    {id:"14.2",topicId:14,level:"intermediate",title:"ORDER BY — DESC (Büyükten Küçüğe)",topicTitle:"ORDER BY Komutu",
+     description:`<code>DESC</code> büyükten küçüğe sıralama yapar:<br><br><code>SELECT * FROM tablo ORDER BY sütun DESC;</code>`,
+     task:"Kitapları yayın yılına göre en yeniden en eskiye sıralayın.",database:"kutuphane",initialCode:"",
+     hints:["ORDER BY yayin_yili DESC kullanın.","DESC büyükten küçüğe sıralama yapar."],
+     solution:"SELECT * FROM kitaplar ORDER BY yayin_yili DESC;",expectedQuery:"SELECT * FROM kitaplar ORDER BY yayin_yili DESC;",checkType:"result"},
+    {id:"14.3",topicId:14,level:"intermediate",title:"ORDER BY — LIMIT ile Sınırlama",topicTitle:"ORDER BY Komutu",
+     description:`<code>LIMIT</code> sonuç sayısını sınırlar:<br><br><code>SELECT * FROM tablo ORDER BY sütun DESC LIMIT 5;</code>`,
+     task:"Ürünleri fiyata göre en pahalıdan sıralayın ve sadece ilk 5 tanesini gösterin.",database:"eticaret",initialCode:"",
+     hints:["ORDER BY fiyat DESC LIMIT 5","LIMIT sorgunun en sonuna yazılır."],
+     solution:"SELECT * FROM urunler ORDER BY fiyat DESC LIMIT 5;",expectedQuery:"SELECT * FROM urunler ORDER BY fiyat DESC LIMIT 5;",checkType:"result"},
+    // ===== KONU 15: UPDATE KOMUTU =====
+    {id:"15.1",topicId:15,level:"intermediate",title:"UPDATE — Tek Kayıt Güncelleme",topicTitle:"UPDATE Komutu",
+     description:`<code>UPDATE</code> mevcut verileri günceller:<br><br><code>UPDATE tablo SET sütun = yeni_değer WHERE koşul;</code><br><br>⚠️ <strong>WHERE olmadan tüm satırlar güncellenir!</strong>`,
+     task:"Ürünler tablosunda 'Akıllı Telefon X' ürününün fiyatını 9499.99 olarak güncelleyin.",database:"eticaret",initialCode:"",
+     hints:["UPDATE urunler SET fiyat = ... WHERE ...","WHERE urun_adi = 'Akıllı Telefon X'"],
+     solution:"UPDATE urunler SET fiyat = 9499.99 WHERE urun_adi = 'Akıllı Telefon X';",
+     checkType:"contains-value",checkQuery:"SELECT fiyat FROM urunler WHERE urun_adi = 'Akıllı Telefon X';",checkValue:"9499.99"},
+    {id:"15.2",topicId:15,level:"intermediate",title:"UPDATE — Birden Fazla Sütun Güncelleme",topicTitle:"UPDATE Komutu",
+     description:`Birden fazla sütunu aynı anda güncelleyebilirsiniz:<br><br><code>UPDATE tablo SET sütun1 = değer1, sütun2 = değer2 WHERE koşul;</code>`,
+     task:"Ürünler tablosunda 'Yoga Matı' ürününün fiyatını 299.90, stokunu 80 olarak güncelleyin.",database:"eticaret",initialCode:"",
+     hints:["UPDATE urunler SET fiyat = ..., stok = ... WHERE ...","Virgülle iki SET ifadesini ayırın."],
+     solution:"UPDATE urunler SET fiyat = 299.90, stok = 80 WHERE urun_adi = 'Yoga Matı';",
+     checkType:"contains-value",checkQuery:"SELECT fiyat FROM urunler WHERE urun_adi = 'Yoga Matı';",checkValue:"299.9"},
+    {id:"15.3",topicId:15,level:"intermediate",title:"UPDATE — Koşullu Toplu Güncelleme",topicTitle:"UPDATE Komutu",
+     description:`Birden fazla kaydı koşula göre güncelleyebilirsiniz:<br><br><code>UPDATE tablo SET sütun = değer WHERE koşul;</code>`,
+     task:"Ürünler tablosunda kategorisi Spor (kategori_id = 5) olan tüm ürünlerin stokunu 100 olarak güncelleyin.",database:"eticaret",initialCode:"",
+     hints:["UPDATE urunler SET stok = 100 WHERE ...","WHERE kategori_id = 5"],
+     solution:"UPDATE urunler SET stok = 100 WHERE kategori_id = 5;",
+     checkType:"contains-value",checkQuery:"SELECT stok FROM urunler WHERE kategori_id = 5 LIMIT 1;",checkValue:"100"},
+    // ===== KONU 16: DELETE KOMUTU =====
+    {id:"16.1",topicId:16,level:"intermediate",title:"DELETE — Koşullu Silme",topicTitle:"DELETE Komutu",
+     description:`<code>DELETE</code> tablodaki kayıtları siler:<br><br><code>DELETE FROM tablo WHERE koşul;</code><br><br>⚠️ <strong>WHERE olmadan TÜM veriler silinir!</strong>`,
+     task:"Siparişler tablosundan durumu 'İptal Edildi' olan siparişleri silin.",database:"eticaret",initialCode:"",
+     hints:["DELETE FROM siparisler WHERE ...","WHERE durum = 'İptal Edildi'"],
+     solution:"DELETE FROM siparisler WHERE durum = 'İptal Edildi';",
+     checkType:"run-check",checkQuery:"SELECT COUNT(*) as sayi FROM siparisler WHERE durum = 'İptal Edildi';",checkValue:"0"},
+    {id:"16.2",topicId:16,level:"intermediate",title:"DELETE — Sayısal Koşulla Silme",topicTitle:"DELETE Komutu",
+     description:`DELETE komutunda sayısal koşullar da kullanılabilir:<br><br><code>DELETE FROM tablo WHERE sütun < değer;</code>`,
+     task:"Notlar tablosundan ortalaması 50'nin altında olan kayıtları silin.",database:"okul",initialCode:"",
+     hints:["DELETE FROM notlar WHERE ortalama < 50;","Bu komut kalıcıdır, dikkatli olun."],
+     solution:"DELETE FROM notlar WHERE ortalama < 50;",
+     checkType:"run-check",checkQuery:"SELECT COUNT(*) as sayi FROM notlar WHERE ortalama < 50;",checkValue:"0"}
 ];

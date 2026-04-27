@@ -1,83 +1,98 @@
-// ========== BEGINNER CURRICULUM ==========
+// ========== BEGINNER CURRICULUM (MEB Müfredatı Sayfa 213-232) ==========
 const BeginnerLessons = [
+    // ===== KONU 1: VERİ TÜRLERİ =====
     {
         id: "1.1", topicId: 1, level: "beginner",
         title: "Veri Türleri — Giriş",
         topicTitle: "Veri Türleri",
-        description: `SQL'de veriler farklı türlerde saklanır. Temel veri türleri şunlardır:
-<br><br>
+        description: `SQL'de veriler farklı türlerde saklanır. Temel veri türleri:<br><br>
 • <code>INTEGER</code> — Tam sayılar (1, 42, -5)<br>
 • <code>TEXT</code> — Metin/yazı ('Ahmet', 'İstanbul')<br>
 • <code>REAL</code> — Ondalıklı sayılar (3.14, 99.90)<br>
 • <code>BLOB</code> — İkili veri (resim, dosya)<br>
-• <code>NULL</code> — Boş değer<br>
-<br>
-Doğru veri türü seçimi, veritabanı performansı ve veri bütünlüğü için çok önemlidir.`,
-        task: "Aşağıdaki sorguyu çalıştırarak öğrenciler tablosunun yapısını inceleyin. Her sütunun veri türünü gözlemleyin.",
+• <code>NULL</code> — Boş değer`,
+        task: "Öğrenciler tablosunun yapısını inceleyin. Her sütunun veri türünü gözlemleyin.",
         database: "okul",
         initialCode: "PRAGMA table_info('ogrenciler');",
-        hints: ["PRAGMA table_info komutu tablo yapısını gösterir.", "Sonuçta 'type' sütununa dikkat edin."],
+        hints: ["PRAGMA table_info komutu tablo yapısını gösterir.", "'type' sütununa dikkat edin."],
         solution: "PRAGMA table_info('ogrenciler');",
         checkType: "run-only"
     },
     {
         id: "1.2", topicId: 1, level: "beginner",
-        title: "Veri Türleri — Uygulama",
+        title: "Veri Türleri — INTEGER ve TEXT",
         topicTitle: "Veri Türleri",
-        description: `Bir tablo oluştururken her sütun için uygun veri türünü belirlememiz gerekir.<br><br>
-Örneğin bir öğrenci tablosunda:<br>
-• <code>ad</code> → TEXT<br>
-• <code>yas</code> → INTEGER<br>
-• <code>ortalama</code> → REAL`,
-        task: "Aşağıdaki bilgilere sahip bir 'ogrenci_bilgi' tablosu oluşturun: numara (INTEGER), isim (TEXT), yas (INTEGER), ortalama (REAL).",
+        description: `<code>INTEGER</code> tam sayı, <code>TEXT</code> metin türüdür.<br><br>
+Örnek: <code>yas INTEGER</code>, <code>ad TEXT</code><br>
+Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
+        task: "'kisiler' tablosu oluşturun: kisi_id (INTEGER), ad (TEXT), soyad (TEXT), yas (INTEGER).",
         database: "okul",
-        initialCode: "CREATE TABLE ogrenci_bilgi (\n  \n);",
-        hints: ["CREATE TABLE tablo_adi (sütun1 TÜR, sütun2 TÜR, ...); şeklinde yazılır.", "Her sütunu virgülle ayırın."],
-        solution: "CREATE TABLE ogrenci_bilgi (\n  numara INTEGER,\n  isim TEXT,\n  yas INTEGER,\n  ortalama REAL\n);",
-        expectedQuery: "PRAGMA table_info('ogrenci_bilgi');",
-        checkType: "structure",
-        checkTable: "ogrenci_bilgi",
-        checkColumns: ["numara", "isim", "yas", "ortalama"]
+        initialCode: "",
+        hints: ["CREATE TABLE kisiler (...); şeklinde yazın.", "Her sütunu virgülle ayırın."],
+        solution: "CREATE TABLE kisiler (\n  kisi_id INTEGER,\n  ad TEXT,\n  soyad TEXT,\n  yas INTEGER\n);",
+        checkType: "structure", checkTable: "kisiler", checkColumns: ["kisi_id", "ad", "soyad", "yas"]
     },
     {
+        id: "1.3", topicId: 1, level: "beginner",
+        title: "Veri Türleri — REAL ve Uygulama",
+        topicTitle: "Veri Türleri",
+        description: `<code>REAL</code> ondalıklı sayı türüdür. Fiyat, ortalama gibi değerler için kullanılır.<br><br>
+Örnek: <code>fiyat REAL</code>, <code>ortalama REAL</code>`,
+        task: "'ogrenci_bilgi' tablosu oluşturun: numara (INTEGER), isim (TEXT), yas (INTEGER), ortalama (REAL).",
+        database: "okul",
+        initialCode: "",
+        hints: ["CREATE TABLE ogrenci_bilgi (sütun1 TÜR, sütun2 TÜR, ...);", "ortalama sütunu REAL olmalı."],
+        solution: "CREATE TABLE ogrenci_bilgi (\n  numara INTEGER,\n  isim TEXT,\n  yas INTEGER,\n  ortalama REAL\n);",
+        checkType: "structure", checkTable: "ogrenci_bilgi", checkColumns: ["numara", "isim", "yas", "ortalama"]
+    },
+    // ===== KONU 2: VERİ TABANI OLUŞTURMA =====
+    {
         id: "2.1", topicId: 2, level: "beginner",
-        title: "Veri Tabanı Oluşturma",
+        title: "Veri Tabanı Oluşturma — Tabloları Keşfet",
         topicTitle: "Veri Tabanı Oluşturma",
-        description: `Veritabanı, birbiriyle ilişkili tabloların saklandığı yapıdır. SQL'de veritabanı oluşturmak için <code>CREATE DATABASE</code> komutu kullanılır.<br><br>
-<strong>Not:</strong> SQLite'da her dosya bir veritabanıdır. Bu platformda 3 hazır veritabanı bulunmaktadır: Okul, E-Ticaret ve Kütüphane.<br><br>
-Şu an kullandığınız veritabanındaki tabloları görmek için aşağıdaki sorguyu çalıştırın.`,
+        description: `Veritabanı, birbiriyle ilişkili tabloların saklandığı yapıdır.<br><br>
+<strong>Not:</strong> SQLite'da her dosya bir veritabanıdır. Bu platformda 3 hazır veritabanı bulunmaktadır: Okul, E-Ticaret ve Kütüphane.`,
         task: "Okul veritabanındaki tüm tabloları listeleyin.",
         database: "okul",
         initialCode: "",
-        hints: ["SQLite'da tablolar sqlite_master tablosunda saklanır.", "SELECT name FROM sqlite_master WHERE type='table'; sorgusunu deneyin."],
+        hints: ["sqlite_master tablosundan bilgi alabilirsiniz.", "SELECT name FROM sqlite_master WHERE type='table';"],
         solution: "SELECT name FROM sqlite_master WHERE type='table';",
-        checkType: "contains-value",
-        checkValue: "ogrenciler"
+        checkType: "contains-value", checkValue: "ogrenciler"
     },
+    {
+        id: "2.2", topicId: 2, level: "beginner",
+        title: "Veri Tabanı Oluşturma — Tablo Yapısı İnceleme",
+        topicTitle: "Veri Tabanı Oluşturma",
+        description: `Bir tablonun yapısını incelemek için <code>PRAGMA table_info</code> kullanılır. Bu komut sütun adlarını, türlerini ve kısıtlamalarını gösterir.`,
+        task: "E-Ticaret veritabanındaki 'urunler' tablosunun yapısını inceleyin.",
+        database: "eticaret",
+        initialCode: "",
+        hints: ["PRAGMA table_info('tablo_adi'); komutunu kullanın.", "Tablo adı 'urunler' dir."],
+        solution: "PRAGMA table_info('urunler');",
+        checkType: "run-only"
+    },
+    // ===== KONU 3: ANAHTARLAR VE İNDEKSLER =====
     {
         id: "3.1", topicId: 3, level: "beginner",
         title: "Anahtarlar — PRIMARY KEY",
         topicTitle: "Anahtarlar ve İndeksler",
-        description: `<code>PRIMARY KEY</code> (Birincil Anahtar), tablodaki her satırı benzersiz olarak tanımlayan sütundur.<br><br>
-• Her tabloda yalnızca bir PRIMARY KEY olabilir.<br>
-• PRIMARY KEY değeri tekrar edemez ve NULL olamaz.<br>
-• Genellikle <code>id</code> veya <code>numara</code> gibi sütunlar için kullanılır.`,
-        task: "Bir 'kitap' tablosu oluşturun: kitap_id (INTEGER, PRIMARY KEY), baslik (TEXT NOT NULL), yazar (TEXT), sayfa (INTEGER).",
+        description: `<code>PRIMARY KEY</code> (Birincil Anahtar), tablodaki her satırı benzersiz olarak tanımlar.<br><br>
+• Her tabloda yalnızca bir PK olabilir<br>
+• PK değeri tekrar edemez ve NULL olamaz<br>
+• Genellikle <code>id</code> veya <code>numara</code> gibi sütunlar için kullanılır`,
+        task: "'kitap' tablosu oluşturun: kitap_id (INTEGER PRIMARY KEY), baslik (TEXT NOT NULL), yazar (TEXT), sayfa (INTEGER).",
         database: "okul",
         initialCode: "CREATE TABLE kitap (\n  \n);",
         hints: ["PRIMARY KEY ifadesini sütun tanımından sonra yazın.", "kitap_id INTEGER PRIMARY KEY şeklinde tanımlayın."],
         solution: "CREATE TABLE kitap (\n  kitap_id INTEGER PRIMARY KEY,\n  baslik TEXT NOT NULL,\n  yazar TEXT,\n  sayfa INTEGER\n);",
-        checkType: "structure",
-        checkTable: "kitap",
-        checkColumns: ["kitap_id", "baslik", "yazar", "sayfa"]
+        checkType: "structure", checkTable: "kitap", checkColumns: ["kitap_id", "baslik", "yazar", "sayfa"]
     },
     {
         id: "3.2", topicId: 3, level: "beginner",
-        title: "Anahtarlar — FOREIGN KEY ve İndeksler",
+        title: "Anahtarlar — FOREIGN KEY",
         topicTitle: "Anahtarlar ve İndeksler",
-        description: `<code>FOREIGN KEY</code> (Yabancı Anahtar), bir tablodaki sütunun başka bir tablonun PRIMARY KEY'ine referans vermesidir. Bu, tablolar arası ilişki kurar.<br><br>
-<code>INDEX</code> (İndeks), sorgu performansını artırmak için kullanılır. Sık aranan sütunlara indeks eklenir.`,
-        task: "Öğrenciler tablosunda hangi sütunun FOREIGN KEY olduğunu bulun. PRAGMA foreign_key_list komutunu kullanın.",
+        description: `<code>FOREIGN KEY</code> (Yabancı Anahtar), bir tablodaki sütunun başka bir tablonun PRIMARY KEY'ine referans vermesidir. Tablolar arası ilişki kurar.`,
+        task: "Öğrenciler tablosunda hangi sütunun FOREIGN KEY olduğunu bulun.",
         database: "okul",
         initialCode: "",
         hints: ["PRAGMA foreign_key_list('tablo_adi'); şeklinde yazılır.", "Öğrenciler tablosunun yabancı anahtarlarını kontrol edin."],
@@ -85,136 +100,176 @@ Doğru veri türü seçimi, veritabanı performansı ve veri bütünlüğü içi
         checkType: "run-only"
     },
     {
+        id: "3.3", topicId: 3, level: "beginner",
+        title: "Anahtarlar — İndeksler",
+        topicTitle: "Anahtarlar ve İndeksler",
+        description: `<code>INDEX</code> (İndeks), sorgu performansını artırmak için kullanılır. Sık aranan sütunlara indeks eklenir.<br><br>
+<code>CREATE INDEX indeks_adi ON tablo(sutun);</code>`,
+        task: "Öğrenciler tablosunun 'sehir' sütununa 'idx_sehir' adında bir indeks oluşturun.",
+        database: "okul",
+        initialCode: "",
+        hints: ["CREATE INDEX idx_sehir ON ogrenciler(sehir);", "İndeks oluşturuldıktan sonra sorgu daha hızlı çalışır."],
+        solution: "CREATE INDEX idx_sehir ON ogrenciler(sehir);",
+        checkType: "run-only"
+    },
+    // ===== KONU 4: TABLO İŞLEMLERİ =====
+    {
         id: "4.1", topicId: 4, level: "beginner",
-        title: "Tablo İşlemleri — ALTER TABLE",
+        title: "Tablo İşlemleri — ALTER TABLE (Sütun Ekleme)",
         topicTitle: "Tablo İşlemleri",
-        description: `Mevcut bir tabloya yeni sütun eklemek için <code>ALTER TABLE</code> komutu kullanılır.<br><br>
+        description: `Mevcut tabloya yeni sütun eklemek için <code>ALTER TABLE</code> kullanılır:<br><br>
 <code>ALTER TABLE tablo_adi ADD COLUMN yeni_sutun TÜR;</code>`,
         task: "Öğrenciler tablosuna 'telefon' adında TEXT türünde yeni bir sütun ekleyin.",
         database: "okul",
         initialCode: "",
         hints: ["ALTER TABLE ogrenciler ADD COLUMN ... şeklinde başlayın.", "Sütun adı 'telefon' ve türü TEXT olmalı."],
         solution: "ALTER TABLE ogrenciler ADD COLUMN telefon TEXT;",
-        checkType: "structure-contains",
-        checkTable: "ogrenciler",
-        checkColumns: ["telefon"]
+        checkType: "structure-contains", checkTable: "ogrenciler", checkColumns: ["telefon"]
     },
     {
         id: "4.2", topicId: 4, level: "beginner",
+        title: "Tablo İşlemleri — ALTER TABLE (Tablo Adı Değiştirme)",
+        topicTitle: "Tablo İşlemleri",
+        description: `Tablo adını değiştirmek için:<br><br>
+<code>ALTER TABLE eski_ad RENAME TO yeni_ad;</code>`,
+        task: "Önce 'deneme' adında bir tablo oluşturun (id INTEGER, veri TEXT), sonra adını 'test_tablo' olarak değiştirin.",
+        database: "okul",
+        initialCode: "CREATE TABLE deneme (id INTEGER, veri TEXT);\n\n-- Tabloyu yeniden adlandırın:\n",
+        hints: ["ALTER TABLE deneme RENAME TO test_tablo;", "İki komutu alt alta yazın."],
+        solution: "CREATE TABLE deneme (id INTEGER, veri TEXT);\nALTER TABLE deneme RENAME TO test_tablo;",
+        checkType: "structure", checkTable: "test_tablo", checkColumns: ["id", "veri"]
+    },
+    {
+        id: "4.3", topicId: 4, level: "beginner",
         title: "Tablo İşlemleri — DROP TABLE",
         topicTitle: "Tablo İşlemleri",
-        description: `Bir tabloyu tamamen silmek için <code>DROP TABLE</code> komutu kullanılır.<br><br>
+        description: `Bir tabloyu tamamen silmek için <code>DROP TABLE</code> kullanılır:<br><br>
 <code>DROP TABLE tablo_adi;</code><br><br>
 ⚠️ <strong>Dikkat:</strong> Bu işlem geri alınamaz! Tüm veriler silinir.`,
-        task: "Önce 'gecici_tablo' adında bir tablo oluşturun (id INTEGER, veri TEXT), sonra bu tabloyu DROP TABLE ile silin.",
+        task: "Önce 'gecici_tablo' oluşturun (id INTEGER, veri TEXT), sonra DROP TABLE ile silin.",
         database: "okul",
-        initialCode: "CREATE TABLE gecici_tablo (id INTEGER, veri TEXT);\n\n-- Şimdi tabloyu silin:\n",
-        hints: ["İki SQL komutunu alt alta yazabilirsiniz.", "DROP TABLE gecici_tablo; komutunu ekleyin."],
+        initialCode: "CREATE TABLE gecici_tablo (id INTEGER, veri TEXT);\n\n-- Tabloyu silin:\n",
+        hints: ["İki SQL komutunu alt alta yazın.", "DROP TABLE gecici_tablo;"],
         solution: "CREATE TABLE gecici_tablo (id INTEGER, veri TEXT);\nDROP TABLE gecici_tablo;",
         checkType: "run-only"
     },
+    // ===== KONU 5: TABLO OLUŞTURMA =====
     {
         id: "5.1", topicId: 5, level: "beginner",
-        title: "Tablo Oluşturma — Basit",
+        title: "Tablo Oluşturma — CREATE TABLE",
         topicTitle: "Tablo Oluşturma",
-        description: `Yeni bir tablo oluşturmak için <code>CREATE TABLE</code> komutu kullanılır.<br><br>
-<code>CREATE TABLE tablo_adi (<br>&nbsp;&nbsp;sutun1 TÜR,<br>&nbsp;&nbsp;sutun2 TÜR,<br>&nbsp;&nbsp;...<br>);</code>`,
-        task: "Bir 'ogrenci' tablosu oluşturun: ogrenci_no (INTEGER PRIMARY KEY), ad (TEXT), soyad (TEXT), sinif (INTEGER).",
+        description: `Yeni tablo oluşturmak için <code>CREATE TABLE</code> kullanılır:<br><br>
+<code>CREATE TABLE tablo_adi (<br>&nbsp;&nbsp;sutun1 TÜR,<br>&nbsp;&nbsp;sutun2 TÜR<br>);</code>`,
+        task: "'ogrenci' tablosu oluşturun: ogrenci_no (INTEGER PRIMARY KEY), ad (TEXT), soyad (TEXT), sinif (INTEGER).",
         database: "okul",
         initialCode: "",
-        hints: ["CREATE TABLE ogrenci ( ... ); şeklinde başlayın.", "Her sütunu virgülle ayırın. Son sütundan sonra virgül koymayın."],
+        hints: ["CREATE TABLE ogrenci ( ... ); şeklinde başlayın.", "Son sütundan sonra virgül koymayın."],
         solution: "CREATE TABLE ogrenci (\n  ogrenci_no INTEGER PRIMARY KEY,\n  ad TEXT,\n  soyad TEXT,\n  sinif INTEGER\n);",
-        checkType: "structure",
-        checkTable: "ogrenci",
-        checkColumns: ["ogrenci_no", "ad", "soyad", "sinif"]
+        checkType: "structure", checkTable: "ogrenci", checkColumns: ["ogrenci_no", "ad", "soyad", "sinif"]
     },
     {
         id: "5.2", topicId: 5, level: "beginner",
-        title: "Tablo Oluşturma — Kısıtlamalar",
+        title: "Tablo Oluşturma — NOT NULL Kısıtlaması",
         topicTitle: "Tablo Oluşturma",
-        description: `Tablo oluştururken sütunlara kısıtlamalar (constraints) ekleyebilirsiniz:<br><br>
-• <code>NOT NULL</code> — Boş bırakılamaz<br>
+        description: `<code>NOT NULL</code> kısıtlaması, sütunun boş bırakılamayacağını belirtir:<br><br>
+<code>ad TEXT NOT NULL</code> → Bu sütun mutlaka doldurulmalıdır.`,
+        task: "'personel' tablosu oluşturun: personel_id (INTEGER PRIMARY KEY), ad (TEXT NOT NULL), soyad (TEXT NOT NULL), departman (TEXT).",
+        database: "okul",
+        initialCode: "",
+        hints: ["NOT NULL ifadesini türden sonra yazın.", "ad TEXT NOT NULL şeklinde."],
+        solution: "CREATE TABLE personel (\n  personel_id INTEGER PRIMARY KEY,\n  ad TEXT NOT NULL,\n  soyad TEXT NOT NULL,\n  departman TEXT\n);",
+        checkType: "structure", checkTable: "personel", checkColumns: ["personel_id", "ad", "soyad", "departman"]
+    },
+    {
+        id: "5.3", topicId: 5, level: "beginner",
+        title: "Tablo Oluşturma — DEFAULT ve UNIQUE",
+        topicTitle: "Tablo Oluşturma",
+        description: `Diğer kısıtlamalar:<br><br>
 • <code>UNIQUE</code> — Tekrar edemez<br>
 • <code>DEFAULT değer</code> — Varsayılan değer atar<br>
 • <code>CHECK(koşul)</code> — Koşul kontrolü`,
-        task: "Bir 'urun' tablosu oluşturun: urun_id (INTEGER PRIMARY KEY), urun_adi (TEXT NOT NULL), fiyat (REAL NOT NULL), stok (INTEGER DEFAULT 0).",
+        task: "'urun' tablosu oluşturun: urun_id (INTEGER PRIMARY KEY), urun_adi (TEXT NOT NULL), fiyat (REAL NOT NULL), stok (INTEGER DEFAULT 0).",
         database: "eticaret",
         initialCode: "",
-        hints: ["DEFAULT kelimesini stok sütununda kullanın.", "fiyat REAL NOT NULL şeklinde yazın."],
+        hints: ["DEFAULT kelimesini stok sütununda kullanın.", "stok INTEGER DEFAULT 0"],
         solution: "CREATE TABLE urun (\n  urun_id INTEGER PRIMARY KEY,\n  urun_adi TEXT NOT NULL,\n  fiyat REAL NOT NULL,\n  stok INTEGER DEFAULT 0\n);",
-        checkType: "structure",
-        checkTable: "urun",
-        checkColumns: ["urun_id", "urun_adi", "fiyat", "stok"]
+        checkType: "structure", checkTable: "urun", checkColumns: ["urun_id", "urun_adi", "fiyat", "stok"]
     },
+    // ===== KONU 6: TABLOLARA VERİ GİRİŞİ =====
     {
         id: "6.1", topicId: 6, level: "beginner",
-        title: "Tablolara Veri Girişi",
+        title: "Tablolara Veri Girişi — Tüm Sütunlar",
         topicTitle: "Tablolara Veri Girişi",
-        description: `Tablolara veri eklemek için <code>INSERT INTO</code> komutu kullanılır. İki temel yol vardır:<br><br>
-1. Tüm sütunlara veri girme:<br>
-<code>INSERT INTO tablo VALUES (değer1, değer2, ...);</code><br><br>
-2. Belirli sütunlara veri girme:<br>
-<code>INSERT INTO tablo (sütun1, sütun2) VALUES (değer1, değer2);</code>`,
-        task: "Öğrenciler tablosuna yeni bir öğrenci ekleyin: ID 21, ad 'Kerem', soyad 'Bal', doğum tarihi '2002-05-10', şehir 'Konya', bölüm ID 1.",
+        description: `Tablolara veri eklemek için <code>INSERT INTO</code> kullanılır:<br><br>
+Tüm sütunlara veri girme:<br>
+<code>INSERT INTO tablo VALUES (değer1, değer2, ...);</code>`,
+        task: "Öğrenciler tablosuna yeni bir öğrenci ekleyin: ID 31, ad 'Ahmet', soyad 'Güneş', doğum tarihi '2002-05-10', şehir 'Konya', bölüm ID 1.",
         database: "okul",
         initialCode: "",
         hints: ["INSERT INTO ogrenciler VALUES (...); şeklinde yazın.", "Metin değerleri tek tırnak içinde yazılır."],
-        solution: "INSERT INTO ogrenciler VALUES (21, 'Kerem', 'Bal', '2002-05-10', 'Konya', 1);",
-        checkType: "contains-value",
-        checkQuery: "SELECT * FROM ogrenciler WHERE ogrenci_id = 21;",
-        checkValue: "Kerem"
+        solution: "INSERT INTO ogrenciler VALUES (31, 'Ahmet', 'Güneş', '2002-05-10', 'Konya', 1);",
+        checkType: "contains-value", checkQuery: "SELECT * FROM ogrenciler WHERE ogrenci_id = 31;", checkValue: "Ahmet"
     },
     {
+        id: "6.2", topicId: 6, level: "beginner",
+        title: "Tablolara Veri Girişi — Belirli Sütunlar",
+        topicTitle: "Tablolara Veri Girişi",
+        description: `Belirli sütunlara veri girme:<br>
+<code>INSERT INTO tablo (sütun1, sütun2) VALUES (değer1, değer2);</code><br><br>
+Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.`,
+        task: "Müşteriler tablosuna sadece ad, soyad ve şehir belirterek müşteri ekleyin: musteri_id 16, ad 'Yasemin', soyad 'Çiçek', şehir 'Eskişehir'.",
+        database: "eticaret",
+        initialCode: "",
+        hints: ["INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (...);", "email ve telefon NULL olacak."],
+        solution: "INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (16, 'Yasemin', 'Çiçek', 'Eskişehir');",
+        checkType: "contains-value", checkQuery: "SELECT * FROM musteriler WHERE musteri_id = 16;", checkValue: "Yasemin"
+    },
+    // ===== KONU 7: INSERT INTO KOMUTU =====
+    {
         id: "7.1", topicId: 7, level: "beginner",
-        title: "INSERT INTO — Temel",
+        title: "INSERT INTO — Temel Kullanım",
         topicTitle: "INSERT INTO Komutu",
         description: `<code>INSERT INTO</code> komutunun temel kullanımı:<br><br>
 <code>INSERT INTO tablo_adi (sütun1, sütun2) VALUES (değer1, değer2);</code><br><br>
-Metin değerleri <strong>tek tırnak</strong> içinde yazılır. Sayısal değerler doğrudan yazılır.`,
-        task: "Müşteriler tablosuna yeni bir müşteri ekleyin: ad 'Zehra', soyad 'Aydın', email 'zehra@email.com', şehir 'Konya', telefon '05111111111'.",
-        database: "eticaret",
+Metin değerleri <strong>tek tırnak</strong> içinde, sayısal değerler doğrudan yazılır.`,
+        task: "Yazarlar tablosuna yeni bir yazar ekleyin: yazar_id 9, ad 'Nazım', soyad 'Hikmet', ulke 'Türkiye'.",
+        database: "kutuphane",
         initialCode: "",
-        hints: ["INSERT INTO musteriler (ad, soyad, email, sehir, telefon) VALUES (...); yazın.", "musteri_id için 11 kullanabilirsiniz."],
-        solution: "INSERT INTO musteriler VALUES (11, 'Zehra', 'Aydın', 'zehra@email.com', 'Konya', '05111111111');",
-        checkType: "contains-value",
-        checkQuery: "SELECT * FROM musteriler WHERE ad = 'Zehra';",
-        checkValue: "Zehra"
+        hints: ["INSERT INTO yazarlar VALUES (...); şeklinde yazın.", "Metin değerlerini tek tırnak içinde yazın."],
+        solution: "INSERT INTO yazarlar VALUES (9, 'Nazım', 'Hikmet', 'Türkiye');",
+        checkType: "contains-value", checkQuery: "SELECT * FROM yazarlar WHERE yazar_id = 9;", checkValue: "Nazım"
     },
     {
         id: "7.2", topicId: 7, level: "beginner",
-        title: "INSERT INTO — Çoklu Kayıt",
+        title: "INSERT INTO — Çoklu Kayıt Ekleme",
         topicTitle: "INSERT INTO Komutu",
-        description: `Birden fazla kayıt eklemek için her bir VALUES grubunu virgülle ayırabilirsiniz:<br><br>
-<code>INSERT INTO tablo VALUES<br>&nbsp;&nbsp;(değer1, değer2),<br>&nbsp;&nbsp;(değer3, değer4),<br>&nbsp;&nbsp;(değer5, değer6);</code>`,
+        description: `Birden fazla kayıt eklemek için her VALUES grubunu virgülle ayırın:<br><br>
+<code>INSERT INTO tablo VALUES<br>&nbsp;&nbsp;(değer1, değer2),<br>&nbsp;&nbsp;(değer3, değer4);</code>`,
         task: "Kategoriler tablosuna 3 yeni kategori ekleyin: (6, 'Oyuncak', 'Çocuk oyuncakları'), (7, 'Kozmetik', 'Güzellik ürünleri'), (8, 'Otomotiv', 'Araç aksesuarları').",
         database: "eticaret",
         initialCode: "",
-        hints: ["INSERT INTO kategoriler VALUES (...), (...), (...); şeklinde yazın.", "Her grup parantez içinde olmalı ve virgülle ayrılmalı."],
+        hints: ["INSERT INTO kategoriler VALUES (...), (...), (...);", "Her grup parantez içinde olmalı."],
         solution: "INSERT INTO kategoriler VALUES\n  (6, 'Oyuncak', 'Çocuk oyuncakları'),\n  (7, 'Kozmetik', 'Güzellik ürünleri'),\n  (8, 'Otomotiv', 'Araç aksesuarları');",
-        checkType: "contains-value",
-        checkQuery: "SELECT * FROM kategoriler WHERE kategori_id >= 6;",
-        checkValue: "Oyuncak"
+        checkType: "contains-value", checkQuery: "SELECT * FROM kategoriler WHERE kategori_id >= 6;", checkValue: "Oyuncak"
     },
     {
         id: "7.3", topicId: 7, level: "beginner",
-        title: "INSERT INTO — Seçici Sütunlar",
+        title: "INSERT INTO — Seçici Sütunlarla Ekleme",
         topicTitle: "INSERT INTO Komutu",
-        description: `Sadece belirli sütunlara veri girmek istediğinizde sütun adlarını belirtirsiniz. Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.<br><br>
-<code>INSERT INTO tablo (sütun1, sütun3) VALUES (değer1, değer3);</code>`,
-        task: "Ürünler tablosuna sadece urun_id, urun_adi ve fiyat belirterek yeni bir ürün ekleyin: (16, 'Bluetooth Hoparlör', 599.90). Stok ve kategori_id belirtmeyin.",
+        description: `Sadece belirli sütunlara veri girmek istediğinizde sütun adlarını belirtirsiniz. Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.`,
+        task: "Ürünler tablosuna sadece urun_id, urun_adi ve fiyat belirterek yeni ürün ekleyin: (26, 'USB Kablo', 49.90).",
         database: "eticaret",
         initialCode: "",
-        hints: ["INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (...); yazın.", "Belirtilmeyen sütunlar otomatik olarak NULL veya DEFAULT değer alır."],
-        solution: "INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (16, 'Bluetooth Hoparlör', 599.90);",
-        checkType: "contains-value",
-        checkQuery: "SELECT * FROM urunler WHERE urun_id = 16;",
-        checkValue: "Bluetooth"
+        hints: ["INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (...);", "stok ve kategori_id NULL olacak."],
+        solution: "INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (26, 'USB Kablo', 49.90);",
+        checkType: "contains-value", checkQuery: "SELECT * FROM urunler WHERE urun_id = 26;", checkValue: "USB"
     },
+    // ===== KONU 8: SELECT KOMUTU =====
     {
         id: "8.1", topicId: 8, level: "beginner",
-        title: "SELECT — Tüm Veriler",
+        title: "SELECT — Tüm Veriler (SELECT *)",
         topicTitle: "SELECT Komutu",
-        description: `<code>SELECT</code> komutu veritabanından veri sorgulamak için kullanılır. En temel kullanımı:<br><br>
+        description: `<code>SELECT</code> komutu veritabanından veri sorgulamak için kullanılır:<br><br>
 <code>SELECT * FROM tablo_adi;</code><br><br>
 <code>*</code> (yıldız) işareti "tüm sütunlar" anlamına gelir.`,
         task: "Öğrenciler tablosundaki tüm verileri listeleyin.",
@@ -229,7 +284,7 @@ Metin değerleri <strong>tek tırnak</strong> içinde yazılır. Sayısal değer
         id: "8.2", topicId: 8, level: "beginner",
         title: "SELECT — Belirli Sütunlar",
         topicTitle: "SELECT Komutu",
-        description: `Sadece istediğiniz sütunları getirmek için sütun adlarını belirtirsiniz:<br><br>
+        description: `Sadece istediğiniz sütunları getirmek için sütun adlarını belirtin:<br><br>
 <code>SELECT sütun1, sütun2 FROM tablo_adi;</code>`,
         task: "Öğrenciler tablosundan sadece ad ve soyad sütunlarını listeleyin.",
         database: "okul",
@@ -241,9 +296,9 @@ Metin değerleri <strong>tek tırnak</strong> içinde yazılır. Sayısal değer
     },
     {
         id: "8.3", topicId: 8, level: "beginner",
-        title: "SELECT — DISTINCT",
+        title: "SELECT — DISTINCT (Benzersiz Değerler)",
         topicTitle: "SELECT Komutu",
-        description: `<code>DISTINCT</code> kelimesi tekrar eden değerleri filtreleyerek sadece benzersiz sonuçları getirir.<br><br>
+        description: `<code>DISTINCT</code> tekrar eden değerleri filtreler, sadece benzersiz sonuçları getirir:<br><br>
 <code>SELECT DISTINCT sütun FROM tablo;</code>`,
         task: "Müşteriler tablosundaki farklı şehirleri listeleyin (tekrar eden şehirler olmasın).",
         database: "eticaret",
@@ -251,6 +306,21 @@ Metin değerleri <strong>tek tırnak</strong> içinde yazılır. Sayısal değer
         hints: ["SELECT DISTINCT sehir FROM ... şeklinde yazın.", "DISTINCT kelimesi SELECT'ten hemen sonra gelir."],
         solution: "SELECT DISTINCT sehir FROM musteriler;",
         expectedQuery: "SELECT DISTINCT sehir FROM musteriler;",
+        checkType: "result"
+    },
+    {
+        id: "8.4", topicId: 8, level: "beginner",
+        title: "SELECT — AS Takma Ad (Alias)",
+        topicTitle: "SELECT Komutu",
+        description: `Sütunlara takma ad vermek için <code>AS</code> kullanılır:<br><br>
+<code>SELECT sütun AS takma_ad FROM tablo;</code><br><br>
+Bu, sonuç tablosundaki sütun başlığını değiştirir.`,
+        task: "Ürünler tablosundan urun_adi sütununu 'Ürün Adı', fiyat sütununu 'Fiyat (TL)' olarak listeleyin.",
+        database: "eticaret",
+        initialCode: "",
+        hints: ["SELECT urun_adi AS '...', fiyat AS '...' FROM ... kullanın.", "Takma ad boşluk içeriyorsa tek tırnak içinde yazın."],
+        solution: "SELECT urun_adi AS 'Ürün Adı', fiyat AS 'Fiyat (TL)' FROM urunler;",
+        expectedQuery: "SELECT urun_adi AS 'Ürün Adı', fiyat AS 'Fiyat (TL)' FROM urunler;",
         checkType: "result"
     }
 ];
