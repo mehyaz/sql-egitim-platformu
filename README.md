@@ -4,7 +4,7 @@ Türkçe, interaktif, tarayıcı tabanlı SQL öğrenme platformu. Sıfırdan il
 
 ## 🌐 Canlı Demo
 
-**[https://meyaz.github.io/sql-egitim-platformu/](https://meyaz.github.io/sql-egitim-platformu/)**
+**[https://mehyaz.github.io/sql-egitim-platformu/](https://mehyaz.github.io/sql-egitim-platformu/)**
 
 ## ✨ Özellikler
 
