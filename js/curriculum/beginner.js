@@ -5,12 +5,20 @@ const BeginnerLessons = [
         id: "1.1", topicId: 1, level: "beginner",
         title: "Veri Türleri — Giriş",
         topicTitle: "Veri Türleri",
-        description: `SQL'de veriler farklı türlerde saklanır. Temel veri türleri:<br><br>
-• <code>INTEGER</code> — Tam sayılar (1, 42, -5)<br>
-• <code>TEXT</code> — Metin/yazı ('Ahmet', 'İstanbul')<br>
-• <code>REAL</code> — Ondalıklı sayılar (3.14, 99.90)<br>
-• <code>BLOB</code> — İkili veri (resim, dosya)<br>
-• <code>NULL</code> — Boş değer`,
+        description: `SQL'de (MySQL) veriler farklı türlerde saklanır. Sık kullanılan veri türleri:<br><br>
+<strong>Metin Türleri:</strong><br>
+• <code>char(n)</code> — Uzunluğu değişmeyen sabit metinler.<br>
+• <code>varchar(n)</code> — Değişebilir uzunluktaki metinler (En fazla n karakter).<br>
+• <code>text</code> — Değişebilir uzunluktaki çok uzun metinler.<br><br>
+<strong>Sayısal Türler:</strong><br>
+• <code>int</code> — Tam sayılar (-2.147 milyar ile +2.147 milyar arası).<br>
+• <code>bigint</code> — Çok büyük tam sayılar.<br>
+• <code>float</code> — Ondalıklı sayılar.<br>
+• <code>decimal(M,D)</code> — Hassas ondalık (M toplam basamak, D virgülden sonraki kısım).<br><br>
+<strong>Tarih Türleri:</strong><br>
+• <code>date</code> — Sadece tarih (YYYY-MM-DD).<br>
+• <code>datetime</code> — Tarih ve saat.<br><br>
+<em>💡 Not: Bu eğitim platformu tarayıcıda çalıştığı için arka planda SQLite motorunu kullanır. SQLite, <code>varchar</code>, <code>int</code>, <code>float</code> gibi tüm standart SQL veri türlerini kabul eder ve sorunsuz çalıştırır.</em>`,
         task: "Öğrenciler tablosunun yapısını inceleyin. Her sütunun veri türünü gözlemleyin.",
         database: "okul",
         initialCode: "PRAGMA table_info('ogrenciler');",
@@ -20,30 +28,32 @@ const BeginnerLessons = [
     },
     {
         id: "1.2", topicId: 1, level: "beginner",
-        title: "Veri Türleri — INTEGER ve TEXT",
+        title: "Veri Türleri — INT ve VARCHAR",
         topicTitle: "Veri Türleri",
-        description: `<code>INTEGER</code> tam sayı, <code>TEXT</code> metin türüdür.<br><br>
-Örnek: <code>yas INTEGER</code>, <code>ad TEXT</code><br>
-Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
-        task: "'kisiler' tablosu oluşturun: kisi_id (INTEGER), ad (TEXT), soyad (TEXT), yas (INTEGER).",
+        description: `<code>int</code> tam sayı türüdür. Yaş, numara, stok adedi gibi değerler için kullanılır.<br><br>
+<code>varchar(n)</code> değişken uzunluklu metin türüdür. İsim, adres, e-posta gibi metinler için kullanılır. (Örneğin: <code>varchar(50)</code> en fazla 50 karakter alır).<br><br>
+Örnek: <code>yas int</code>, <code>ad varchar(50)</code><br>
+Tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
+        task: "'kisiler' tablosu oluşturun: kisi_id (int), ad (varchar(50)), soyad (varchar(50)), yas (int).",
         database: "okul",
         initialCode: "",
         hints: ["CREATE TABLE kisiler (...); şeklinde yazın.", "Her sütunu virgülle ayırın."],
-        solution: "CREATE TABLE kisiler (\n  kisi_id INTEGER,\n  ad TEXT,\n  soyad TEXT,\n  yas INTEGER\n);",
+        solution: "CREATE TABLE kisiler (\n  kisi_id int,\n  ad varchar(50),\n  soyad varchar(50),\n  yas int\n);",
         checkType: "structure", checkTable: "kisiler", checkColumns: ["kisi_id", "ad", "soyad", "yas"]
     },
     {
         id: "1.3", topicId: 1, level: "beginner",
-        title: "Veri Türleri — REAL ve Uygulama",
+        title: "Veri Türleri — FLOAT, DECIMAL ve DATE",
         topicTitle: "Veri Türleri",
-        description: `<code>REAL</code> ondalıklı sayı türüdür. Fiyat, ortalama gibi değerler için kullanılır.<br><br>
-Örnek: <code>fiyat REAL</code>, <code>ortalama REAL</code>`,
-        task: "'ogrenci_bilgi' tablosu oluşturun: numara (INTEGER), isim (TEXT), yas (INTEGER), ortalama (REAL).",
-        database: "okul",
+        description: `<code>float</code> ondalıklı sayı türüdür. <code>decimal</code> ise özellikle para birimleri gibi hassasiyet gerektiren yerlerde kullanılır (Örn: <code>decimal(5,2)</code> 999.99 şeklinde değer tutar).<br><br>
+<code>date</code> tarih türüdür ve <code>'YYYY-MM-DD'</code> formatında değer saklar.<br><br>
+Örnek: <code>fiyat decimal(10,2)</code>, <code>kayit_tarihi date</code>`,
+        task: "'urun_bilgi' tablosu oluşturun: urun_id (int), urun_adi (varchar(100)), fiyat (decimal(8,2)), eklenme_tarihi (date).",
+        database: "eticaret",
         initialCode: "",
-        hints: ["CREATE TABLE ogrenci_bilgi (sütun1 TÜR, sütun2 TÜR, ...);", "ortalama sütunu REAL olmalı."],
-        solution: "CREATE TABLE ogrenci_bilgi (\n  numara INTEGER,\n  isim TEXT,\n  yas INTEGER,\n  ortalama REAL\n);",
-        checkType: "structure", checkTable: "ogrenci_bilgi", checkColumns: ["numara", "isim", "yas", "ortalama"]
+        hints: ["CREATE TABLE urun_bilgi (sütun1 TÜR, sütun2 TÜR, ...);", "fiyat sütunu decimal(8,2) olmalı."],
+        solution: "CREATE TABLE urun_bilgi (\n  urun_id int,\n  urun_adi varchar(100),\n  fiyat decimal(8,2),\n  eklenme_tarihi date\n);",
+        checkType: "structure", checkTable: "urun_bilgi", checkColumns: ["urun_id", "urun_adi", "fiyat", "eklenme_tarihi"]
     },
     // ===== KONU 2: VERİ TABANI OLUŞTURMA =====
     {
@@ -80,11 +90,11 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
 • Her tabloda yalnızca bir PK olabilir<br>
 • PK değeri tekrar edemez ve NULL olamaz<br>
 • Genellikle <code>id</code> veya <code>numara</code> gibi sütunlar için kullanılır`,
-        task: "'kitap' tablosu oluşturun: kitap_id (INTEGER PRIMARY KEY), baslik (TEXT NOT NULL), yazar (TEXT), sayfa (INTEGER).",
+        task: "'kitap' tablosu oluşturun: kitap_id (int PRIMARY KEY), baslik (varchar(100) NOT NULL), yazar (varchar(50)), sayfa (int).",
         database: "okul",
         initialCode: "CREATE TABLE kitap (\n  \n);",
-        hints: ["PRIMARY KEY ifadesini sütun tanımından sonra yazın.", "kitap_id INTEGER PRIMARY KEY şeklinde tanımlayın."],
-        solution: "CREATE TABLE kitap (\n  kitap_id INTEGER PRIMARY KEY,\n  baslik TEXT NOT NULL,\n  yazar TEXT,\n  sayfa INTEGER\n);",
+        hints: ["PRIMARY KEY ifadesini sütun tanımından sonra yazın.", "kitap_id int PRIMARY KEY şeklinde tanımlayın."],
+        solution: "CREATE TABLE kitap (\n  kitap_id int PRIMARY KEY,\n  baslik varchar(100) NOT NULL,\n  yazar varchar(50),\n  sayfa int\n);",
         checkType: "structure", checkTable: "kitap", checkColumns: ["kitap_id", "baslik", "yazar", "sayfa"]
     },
     {
@@ -119,11 +129,11 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
         topicTitle: "Tablo İşlemleri",
         description: `Mevcut tabloya yeni sütun eklemek için <code>ALTER TABLE</code> kullanılır:<br><br>
 <code>ALTER TABLE tablo_adi ADD COLUMN yeni_sutun TÜR;</code>`,
-        task: "Öğrenciler tablosuna 'telefon' adında TEXT türünde yeni bir sütun ekleyin.",
+        task: "Öğrenciler tablosuna 'telefon' adında varchar(20) türünde yeni bir sütun ekleyin.",
         database: "okul",
         initialCode: "",
         hints: ["ALTER TABLE ogrenciler ADD COLUMN ... şeklinde başlayın.", "Sütun adı 'telefon' ve türü TEXT olmalı."],
-        solution: "ALTER TABLE ogrenciler ADD COLUMN telefon TEXT;",
+        solution: "ALTER TABLE ogrenciler ADD COLUMN telefon varchar(20);",
         checkType: "structure-contains", checkTable: "ogrenciler", checkColumns: ["telefon"]
     },
     {
@@ -132,11 +142,11 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
         topicTitle: "Tablo İşlemleri",
         description: `Tablo adını değiştirmek için:<br><br>
 <code>ALTER TABLE eski_ad RENAME TO yeni_ad;</code>`,
-        task: "Önce 'deneme' adında bir tablo oluşturun (id INTEGER, veri TEXT), sonra adını 'test_tablo' olarak değiştirin.",
+        task: "Önce 'deneme' adında bir tablo oluşturun (id int, veri varchar(100)), sonra adını 'test_tablo' olarak değiştirin.",
         database: "okul",
-        initialCode: "CREATE TABLE deneme (id INTEGER, veri TEXT);\n\n-- Tabloyu yeniden adlandırın:\n",
+        initialCode: "CREATE TABLE deneme (id int, veri varchar(100));\n\n-- Tabloyu yeniden adlandırın:\n",
         hints: ["ALTER TABLE deneme RENAME TO test_tablo;", "İki komutu alt alta yazın."],
-        solution: "CREATE TABLE deneme (id INTEGER, veri TEXT);\nALTER TABLE deneme RENAME TO test_tablo;",
+        solution: "CREATE TABLE deneme (id int, veri varchar(100));\nALTER TABLE deneme RENAME TO test_tablo;",
         checkType: "structure", checkTable: "test_tablo", checkColumns: ["id", "veri"]
     },
     {
@@ -146,11 +156,11 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
         description: `Bir tabloyu tamamen silmek için <code>DROP TABLE</code> kullanılır:<br><br>
 <code>DROP TABLE tablo_adi;</code><br><br>
 ⚠️ <strong>Dikkat:</strong> Bu işlem geri alınamaz! Tüm veriler silinir.`,
-        task: "Önce 'gecici_tablo' oluşturun (id INTEGER, veri TEXT), sonra DROP TABLE ile silin.",
+        task: "Önce 'gecici_tablo' oluşturun (id int, veri varchar(100)), sonra DROP TABLE ile silin.",
         database: "okul",
-        initialCode: "CREATE TABLE gecici_tablo (id INTEGER, veri TEXT);\n\n-- Tabloyu silin:\n",
+        initialCode: "CREATE TABLE gecici_tablo (id int, veri varchar(100));\n\n-- Tabloyu silin:\n",
         hints: ["İki SQL komutunu alt alta yazın.", "DROP TABLE gecici_tablo;"],
-        solution: "CREATE TABLE gecici_tablo (id INTEGER, veri TEXT);\nDROP TABLE gecici_tablo;",
+        solution: "CREATE TABLE gecici_tablo (id int, veri varchar(100));\nDROP TABLE gecici_tablo;",
         checkType: "run-only"
     },
     // ===== KONU 5: TABLO OLUŞTURMA =====
@@ -160,11 +170,11 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
         topicTitle: "Tablo Oluşturma",
         description: `Yeni tablo oluşturmak için <code>CREATE TABLE</code> kullanılır:<br><br>
 <code>CREATE TABLE tablo_adi (<br>&nbsp;&nbsp;sutun1 TÜR,<br>&nbsp;&nbsp;sutun2 TÜR<br>);</code>`,
-        task: "'ogrenci' tablosu oluşturun: ogrenci_no (INTEGER PRIMARY KEY), ad (TEXT), soyad (TEXT), sinif (INTEGER).",
+        task: "'ogrenci' tablosu oluşturun: ogrenci_no (int PRIMARY KEY), ad (varchar(50)), soyad (varchar(50)), sinif (int).",
         database: "okul",
         initialCode: "",
         hints: ["CREATE TABLE ogrenci ( ... ); şeklinde başlayın.", "Son sütundan sonra virgül koymayın."],
-        solution: "CREATE TABLE ogrenci (\n  ogrenci_no INTEGER PRIMARY KEY,\n  ad TEXT,\n  soyad TEXT,\n  sinif INTEGER\n);",
+        solution: "CREATE TABLE ogrenci (\n  ogrenci_no int PRIMARY KEY,\n  ad varchar(50),\n  soyad varchar(50),\n  sinif int\n);",
         checkType: "structure", checkTable: "ogrenci", checkColumns: ["ogrenci_no", "ad", "soyad", "sinif"]
     },
     {
@@ -172,12 +182,12 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
         title: "Tablo Oluşturma — NOT NULL Kısıtlaması",
         topicTitle: "Tablo Oluşturma",
         description: `<code>NOT NULL</code> kısıtlaması, sütunun boş bırakılamayacağını belirtir:<br><br>
-<code>ad TEXT NOT NULL</code> → Bu sütun mutlaka doldurulmalıdır.`,
-        task: "'personel' tablosu oluşturun: personel_id (INTEGER PRIMARY KEY), ad (TEXT NOT NULL), soyad (TEXT NOT NULL), departman (TEXT).",
+<code>ad varchar(50) NOT NULL</code> → Bu sütun mutlaka doldurulmalıdır.`,
+        task: "'personel' tablosu oluşturun: personel_id (int PRIMARY KEY), ad (varchar(50) NOT NULL), soyad (varchar(50) NOT NULL), departman (varchar(50)).",
         database: "okul",
         initialCode: "",
-        hints: ["NOT NULL ifadesini türden sonra yazın.", "ad TEXT NOT NULL şeklinde."],
-        solution: "CREATE TABLE personel (\n  personel_id INTEGER PRIMARY KEY,\n  ad TEXT NOT NULL,\n  soyad TEXT NOT NULL,\n  departman TEXT\n);",
+        hints: ["NOT NULL ifadesini türden sonra yazın.", "ad varchar(50) NOT NULL şeklinde."],
+        solution: "CREATE TABLE personel (\n  personel_id int PRIMARY KEY,\n  ad varchar(50) NOT NULL,\n  soyad varchar(50) NOT NULL,\n  departman varchar(50)\n);",
         checkType: "structure", checkTable: "personel", checkColumns: ["personel_id", "ad", "soyad", "departman"]
     },
     {
@@ -188,11 +198,11 @@ Bir tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
 • <code>UNIQUE</code> — Tekrar edemez<br>
 • <code>DEFAULT değer</code> — Varsayılan değer atar<br>
 • <code>CHECK(koşul)</code> — Koşul kontrolü`,
-        task: "'urun' tablosu oluşturun: urun_id (INTEGER PRIMARY KEY), urun_adi (TEXT NOT NULL), fiyat (REAL NOT NULL), stok (INTEGER DEFAULT 0).",
+        task: "'urun' tablosu oluşturun: urun_id (int PRIMARY KEY), urun_adi (varchar(100) NOT NULL), fiyat (decimal(10,2) NOT NULL), stok (int DEFAULT 0).",
         database: "eticaret",
         initialCode: "",
-        hints: ["DEFAULT kelimesini stok sütununda kullanın.", "stok INTEGER DEFAULT 0"],
-        solution: "CREATE TABLE urun (\n  urun_id INTEGER PRIMARY KEY,\n  urun_adi TEXT NOT NULL,\n  fiyat REAL NOT NULL,\n  stok INTEGER DEFAULT 0\n);",
+        hints: ["DEFAULT kelimesini stok sütununda kullanın.", "stok int DEFAULT 0"],
+        solution: "CREATE TABLE urun (\n  urun_id int PRIMARY KEY,\n  urun_adi varchar(100) NOT NULL,\n  fiyat decimal(10,2) NOT NULL,\n  stok int DEFAULT 0\n);",
         checkType: "structure", checkTable: "urun", checkColumns: ["urun_id", "urun_adi", "fiyat", "stok"]
     },
     // ===== KONU 6: TABLOLARA VERİ GİRİŞİ =====
