@@ -53,13 +53,25 @@ const DatabaseEngine = (function () {
                 (23,'Onur','Taş','2001-10-20','Gaziantep',3),(24,'Simge','Ateş','2002-12-01','Kayseri',4),
                 (25,'Furkan','Yavuz','2003-03-17','Sivas',5),(26,'Ceren','Tunç','2001-08-25','Eskişehir',1),
                 (27,'Barış','Aslan','2002-02-09','Trabzon',2),(28,'Melis','Ünal','2003-11-14','Malatya',3),
-                (29,'Taha','Güler','2001-06-30','Denizli',4),(30,'Nazlı','Şen','2002-07-19','Muğla',5)`);
+                (29,'Taha','Güler','2001-06-30','Denizli',4),(30,'Nazlı','Şen','2002-07-19','Muğla',5),
+                (31,'Yiğit','Çakır','2002-01-28','İstanbul',1),(32,'Damla','Özer','2003-05-14','Ankara',2),
+                (33,'Alp','Koçak','2001-09-03','İzmir',3),(34,'Dilara','Sezer','2002-08-19','Bursa',4),
+                (35,'Ege','Tuncer','2003-02-22','Antalya',5),(36,'Nehir','Yalçın','2001-12-07','İstanbul',1),
+                (37,'Doruk','Aktaş','2002-04-11','Ankara',2),(38,'Cemre','Bozkurt','2003-10-25','Konya',3),
+                (39,'Rüzgar','Avcı','2001-07-16','Eskişehir',4),(40,'Defne','Kaplan','2002-11-30','Trabzon',5),
+                (41,'Atlas','Erdogan','2003-06-08','Samsun',1),(42,'Lina','Gürkan','2001-03-21','Adana',2),
+                (43,'Aras','Şimşek','2002-09-14','Gaziantep',3),(44,'Mira','Tekin','2003-01-05','Kayseri',4),
+                (45,'Çınar','Korkmaz','2001-11-18','Diyarbakır',5),(46,'Ada','Bayrak','2002-06-23','Mersin',1),
+                (47,'Kuzey','Durmaz','2003-08-02','Malatya',2),(48,'Duru','Çevik','2001-04-27','Denizli',3),
+                (49,'Poyraz','Sönmez','2002-10-09','Sivas',4),(50,'Asya','Güneş','2003-12-15','Muğla',5)`);
             // Dersler
             db.run(`INSERT INTO dersler VALUES
                 (1,'Programlamaya Giriş',4,1),(2,'Veritabanı Yönetimi',3,2),
                 (3,'Devre Analizi',4,4),(4,'Elektronik I',3,3),
                 (5,'Genel Muhasebe',3,5),(6,'Pazarlama İlkeleri',3,6),
-                (7,'Matematik Analiz I',4,7),(8,'Lineer Cebir',3,8)`);
+                (7,'Matematik Analiz I',4,7),(8,'Lineer Cebir',3,8),
+                (9,'Veri Yapıları',4,1),(10,'Web Programlama',3,2),
+                (11,'Sinyal İşleme',3,3),(12,'Finansal Yönetim',3,5)`);
             // Notlar
             db.run(`INSERT INTO notlar VALUES
                 (1,1,1,85,90,88.0),(2,1,2,70,80,76.0),(3,2,1,90,95,93.0),(4,2,2,75,85,81.0),
@@ -76,7 +88,17 @@ const DatabaseEngine = (function () {
                 (45,23,5,55,60,58.0),(46,23,6,78,82,80.4),(47,24,7,92,88,89.6),(48,24,8,85,90,88.0),
                 (49,25,1,40,50,46.0),(50,25,2,62,68,65.6),(51,26,1,88,92,90.4),(52,26,2,95,98,96.8),
                 (53,27,3,72,78,75.6),(54,27,4,80,85,83.0),(55,28,5,65,70,68.0),(56,28,6,58,62,60.4),
-                (57,29,7,78,85,82.2),(58,29,8,90,95,93.0),(59,30,1,50,58,54.8),(60,30,2,70,75,73.0)`);
+                (57,29,7,78,85,82.2),(58,29,8,90,95,93.0),(59,30,1,50,58,54.8),(60,30,2,70,75,73.0),
+                (61,31,1,88,85,86.2),(62,31,9,92,90,90.8),(63,32,3,74,80,77.6),(64,32,11,68,75,72.2),
+                (65,33,5,80,85,83.0),(66,33,12,72,78,75.6),(67,34,7,90,88,88.8),(68,34,8,85,92,89.2),
+                (69,35,1,55,62,59.2),(70,35,10,70,75,73.0),(71,36,9,95,98,96.8),(72,36,10,88,90,89.2),
+                (73,37,3,60,65,63.0),(74,37,4,72,78,75.6),(75,38,5,82,88,85.6),(76,38,6,76,80,78.4),
+                (77,39,7,68,72,70.4),(78,39,8,80,82,81.2),(79,40,1,42,55,49.6),(80,40,10,58,65,62.2),
+                (81,41,1,78,82,80.4),(82,41,2,85,88,86.8),(83,42,3,90,85,87.0),(84,42,4,82,78,79.6),
+                (85,43,5,65,70,68.0),(86,43,6,58,62,60.4),(87,44,7,92,95,93.8),(88,44,8,88,90,89.2),
+                (89,45,1,48,52,50.4),(90,45,10,55,60,58.0),(91,46,9,85,88,86.8),(92,46,2,90,92,91.2),
+                (93,47,3,75,80,78.0),(94,47,11,82,85,83.8),(95,48,5,70,72,71.2),(96,48,12,65,70,68.0),
+                (97,49,7,88,92,90.4),(98,49,8,78,82,80.4),(99,50,1,62,68,65.6),(100,50,10,72,78,75.6)`);
         },
 
         eticaret: function (db) {
@@ -119,7 +141,14 @@ const DatabaseEngine = (function () {
                 (19,'Roman - Tutunamayanlar',55.00,95,3),(20,'Pilates Topu',179.90,110,5),
                 (21,'Bluetooth Hoparlor',599.90,65,1),(22,'Kadın Ceket',899.90,85,2),
                 (23,'Çocuk Ayakkabı',299.90,130,2),(24,'Ansiklopedi Seti',199.90,40,3),
-                (25,'Bardak Seti',129.90,200,4)`);
+                (25,'Bardak Seti',129.90,200,4),(26,'Monitör 27 inç',5999.00,30,1),
+                (27,'Erkek Spor Ayakkabı',649.90,120,5),(28,'Kadın Çanta',1299.90,75,2),
+                (29,'Python Kitabı',119.90,55,3),(30,'Halı 200x300',2499.00,20,4),
+                (31,'Dambıl Seti',799.90,45,5),(32,'Webcam HD',449.90,80,1),
+                (33,'Çocuk Mont',549.90,95,2),(34,'Tarih Kitabı',75.00,65,3),
+                (35,'Ayna Dekoratif',399.00,50,4),(36,'Bisiklet',4999.00,12,5),
+                (37,'Powerbank 20000mAh',349.90,150,1),(38,'Kadın Spor Tayt',259.90,160,2),
+                (39,'Felsefe Kitabı',62.00,70,3),(40,'Masa Saati',189.90,90,4)`);
             // Musteriler
             db.run(`INSERT INTO musteriler VALUES
                 (1,'Ali','Veli','ali@email.com','İstanbul','05301234567'),
@@ -136,7 +165,17 @@ const DatabaseEngine = (function () {
                 (12,'Melike','Sarı','melike@email.com','Kayseri','05412223344'),
                 (13,'Cem','Polat','cem@email.com','Gaziantep','05523334455'),
                 (14,'Ayşenur','Kaya','aysenur@email.com','İstanbul','05634445566'),
-                (15,'Baran','Aydın','baran@email.com','Ankara','05745556677')`);
+                (15,'Baran','Aydın','baran@email.com','Ankara','05745556677'),
+                (16,'Yasemin','Çiçek','yasemin@email.com','Eskişehir','05856667788'),
+                (17,'Tarık','Özkan','tarik@email.com','Trabzon','05967778899'),
+                (18,'Gizem','Karaca','gizem@email.com','Samsun','05078889900'),
+                (19,'Volkan','Başar','volkan@email.com','Adana','05189990011'),
+                (20,'Cansu','Erdem','cansu@email.com','Antalya','05291112233'),
+                (21,'Oğuzhan','Tunç','oguzhan@email.com','Diyarbakır','05302223344'),
+                (22,'Pelin','Aksoy','pelin@email.com','Mersin','05413334455'),
+                (23,'Serkan','Demirtaş','serkan@email.com','Bursa','05524445566'),
+                (24,'Nurgül','Yıldırım','nurgul@email.com','Konya','05635556677'),
+                (25,'Berk','Kahraman','berk@email.com','İstanbul','05746667788')`);
             // Siparisler
             db.run(`INSERT INTO siparisler VALUES
                 (1,1,'2024-01-15',9299.89,'Teslim Edildi'),(2,1,'2024-02-20',1299.00,'Teslim Edildi'),
@@ -152,7 +191,13 @@ const DatabaseEngine = (function () {
                 (21,11,'2024-02-05',3499.00,'Teslim Edildi'),(22,11,'2024-03-18',349.90,'Teslim Edildi'),
                 (23,12,'2024-01-22',1179.80,'Teslim Edildi'),(24,13,'2024-02-28',599.90,'Kargoda'),
                 (25,14,'2024-03-10',55.00,'Teslim Edildi'),(26,14,'2024-03-22',3499.00,'Hazırlanıyor'),
-                (27,15,'2024-01-15',899.90,'Teslim Edildi'),(28,15,'2024-03-30',429.80,'İptal Edildi')`);
+                (27,15,'2024-01-15',899.90,'Teslim Edildi'),(28,15,'2024-03-30',429.80,'İptal Edildi'),
+                (29,16,'2024-02-10',5999.00,'Teslim Edildi'),(30,17,'2024-03-05',649.90,'Kargoda'),
+                (31,18,'2024-01-20',1299.90,'Teslim Edildi'),(32,19,'2024-02-25',799.90,'Teslim Edildi'),
+                (33,20,'2024-03-12',4999.00,'Hazırlanıyor'),(34,21,'2024-01-28',449.90,'Teslim Edildi'),
+                (35,22,'2024-02-15',549.90,'Teslim Edildi'),(36,23,'2024-03-20',349.90,'Kargoda'),
+                (37,24,'2024-01-10',2499.00,'Teslim Edildi'),(38,25,'2024-02-28',8999.99,'Teslim Edildi'),
+                (39,16,'2024-03-25',259.90,'Hazırlanıyor'),(40,20,'2024-03-30',189.90,'Kargoda')`);
             // Siparis Detaylari
             db.run(`INSERT INTO siparis_detaylari VALUES
                 (1,1,1,1,8999.99),(2,1,7,2,149.90),(3,2,3,1,1299.00),(4,3,2,1,24999.90),
@@ -165,7 +210,11 @@ const DatabaseEngine = (function () {
                 (27,20,3,1,1299.00),(28,20,7,2,149.90),
                 (29,21,16,1,3499.00),(30,22,17,1,349.90),(31,23,18,2,279.90),(32,23,21,1,599.90),
                 (33,24,21,1,599.90),(34,25,19,1,55.00),(35,26,16,1,3499.00),
-                (36,27,14,1,899.90),(37,28,20,1,179.90),(38,28,15,1,249.90)`);
+                (36,27,14,1,899.90),(37,28,20,1,179.90),(38,28,15,1,249.90),
+                (39,29,26,1,5999.00),(40,30,27,1,649.90),(41,31,28,1,1299.90),
+                (42,32,31,1,799.90),(43,33,36,1,4999.00),(44,34,32,1,449.90),
+                (45,35,33,1,549.90),(46,36,37,1,349.90),(47,37,30,1,2499.00),
+                (48,38,1,1,8999.99),(49,39,38,1,259.90),(50,40,40,1,189.90)`);
         },
 
         kutuphane: function (db) {
@@ -192,7 +241,11 @@ const DatabaseEngine = (function () {
                 (1,'Orhan','Pamuk','Türkiye'),(2,'Elif','Şafak','Türkiye'),
                 (3,'Sabahattin','Ali','Türkiye'),(4,'Yaşar','Kemal','Türkiye'),
                 (5,'Ahmet','Ümit','Türkiye'),(6,'Fyodor','Dostoyevski','Rusya'),
-                (7,'Gabriel','García Márquez','Kolombiya'),(8,'Paulo','Coelho','Brezilya')`);
+                (7,'Gabriel','García Márquez','Kolombiya'),(8,'Paulo','Coelho','Brezilya'),
+                (9,'Nazım','Hikmet','Türkiye'),(10,'Halide Edib','Adıvar','Türkiye'),
+                (11,'Oğuz','Atay','Türkiye'),(12,'Lev','Tolstoy','Rusya'),
+                (13,'Franz','Kafka','Çekya'),(14,'Victor','Hugo','Fransa'),
+                (15,'Reşat Nuri','Güntekin','Türkiye')`);
             // Kitaplar
             db.run(`INSERT INTO kitaplar VALUES
                 (1,'Kürk Mantolu Madonna',3,1943,'Roman',160),
@@ -214,7 +267,17 @@ const DatabaseEngine = (function () {
                 (17,'Yer Demir Gök Bakır',4,1963,'Roman',380),
                 (18,'Budala',6,1869,'Roman',620),
                 (19,'Kolera Günlerinde Aşk',7,1985,'Roman',368),
-                (20,'Programlama Mantığı ve Tekniği',NULL,2020,'Ders Kitabı',450)`);
+                (20,'Programlama Mantığı ve Tekniği',NULL,2020,'Ders Kitabı',450),
+                (21,'Tutunamayanlar',11,1972,'Roman',724),
+                (22,'Tehlikeli Oyunlar',11,1973,'Roman',479),
+                (23,'Savaş ve Barış',12,1869,'Roman',1225),
+                (24,'Anna Karenina',12,1877,'Roman',864),
+                (25,'Dönüşüm',13,1915,'Roman',96),
+                (26,'Dava',13,1925,'Roman',304),
+                (27,'Sefiller',14,1862,'Roman',1488),
+                (28,'Çalıkuşu',15,1922,'Roman',512),
+                (29,'Yaprak Dökümü',15,1930,'Roman',280),
+                (30,'Ateşten Gömlek',10,1922,'Roman',192)`);
             // Uyeler
             db.run(`INSERT INTO uyeler VALUES
                 (1,'Ahmet','Kaya','ahmet@email.com','2023-01-10','Premium'),
@@ -226,7 +289,17 @@ const DatabaseEngine = (function () {
                 (7,'Cem','Koç','cem@email.com','2023-06-25','Standart'),
                 (8,'Berna','Aydın','berna@email.com','2023-02-28','Standart'),
                 (9,'Kaan','Özdemir','kaan@email.com','2023-07-14','Premium'),
-                (10,'Nisa','Kurt','nisa@email.com','2023-08-30','Standart')`);
+                (10,'Nisa','Kurt','nisa@email.com','2023-08-30','Standart'),
+                (11,'Emre','Çetin','emre.cetin@email.com','2023-09-05','Premium'),
+                (12,'Büşra','Yılmaz','busra@email.com','2023-09-15','Standart'),
+                (13,'Ozan','Kara','ozan@email.com','2023-10-01','Standart'),
+                (14,'Sıla','Doğan','sila@email.com','2023-10-20','Premium'),
+                (15,'Batuhan','Güneş','batuhan@email.com','2023-11-08','Standart'),
+                (16,'Aslı','Tekin','asli@email.com','2023-11-25','Premium'),
+                (17,'Hüseyin','Aksoy','huseyin@email.com','2023-12-03','Standart'),
+                (18,'Esra','Korkmaz','esra@email.com','2023-12-18','Standart'),
+                (19,'Umut','Şimşek','umut@email.com','2024-01-05','Premium'),
+                (20,'Melek','Avcı','melek@email.com','2024-01-20','Standart')`);
             // Odunc Kayitlari
             db.run(`INSERT INTO odunc_kayitlari VALUES
                 (1,1,1,'2024-01-05','2024-01-20','İade Edildi'),(2,3,1,'2024-01-25','2024-02-10','İade Edildi'),
@@ -243,7 +316,15 @@ const DatabaseEngine = (function () {
                 (23,17,2,'2024-03-08',NULL,'Ödünç Verildi'),(24,11,3,'2024-03-12','2024-03-28','İade Edildi'),
                 (25,5,4,'2024-03-15',NULL,'Ödünç Verildi'),(26,18,5,'2024-03-18',NULL,'Ödünç Verildi'),
                 (27,6,6,'2024-03-20',NULL,'Ödünç Verildi'),(28,1,7,'2024-03-22',NULL,'Ödünç Verildi'),
-                (29,10,8,'2024-03-25',NULL,'Ödünç Verildi'),(30,4,9,'2024-03-28',NULL,'Ödünç Verildi')`);
+                (29,10,8,'2024-03-25',NULL,'Ödünç Verildi'),(30,4,9,'2024-03-28',NULL,'Ödünç Verildi'),
+                (31,21,11,'2024-02-01','2024-02-20','İade Edildi'),(32,22,11,'2024-02-10','2024-03-01','İade Edildi'),
+                (33,23,12,'2024-01-15','2024-02-05','İade Edildi'),(34,24,13,'2024-02-20','2024-03-10','İade Edildi'),
+                (35,25,14,'2024-03-01',NULL,'Ödünç Verildi'),(36,26,14,'2024-03-05',NULL,'Ödünç Verildi'),
+                (37,27,15,'2024-01-20','2024-02-10','İade Edildi'),(38,28,16,'2024-02-15','2024-03-05','İade Edildi'),
+                (39,29,17,'2024-03-10',NULL,'Ödünç Verildi'),(40,30,17,'2024-03-15',NULL,'Ödünç Verildi'),
+                (41,21,18,'2024-03-18','2024-04-01','İade Edildi'),(42,23,19,'2024-03-20',NULL,'Ödünç Verildi'),
+                (43,24,19,'2024-03-22',NULL,'Ödünç Verildi'),(44,28,20,'2024-03-25',NULL,'Ödünç Verildi'),
+                (45,22,20,'2024-03-28',NULL,'Ödünç Verildi')`);
         }
     };
 
