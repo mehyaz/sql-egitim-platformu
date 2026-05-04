@@ -10,6 +10,10 @@ const App = (function () {
             // Initialize lessons
             LessonsModule.init();
 
+            // Initialize Auth and Teacher modules
+            if (typeof AuthModule !== 'undefined') AuthModule.init();
+            if (typeof TeacherModule !== 'undefined') TeacherModule.init();
+
             // Build sidebar navigation
             buildNavigation();
 

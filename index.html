@@ -19,6 +19,11 @@
     <!-- sql.js -->
     <script src="https://cdn.jsdelivr.net/npm/sql.js@1.12.0/dist/sql-wasm.js"></script>
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <!-- Favicon (inline SVG) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗃️</text></svg>">
 </head>
@@ -75,6 +80,16 @@
                 </button>
             </nav>
             <div class="top-bar-right">
+                <!-- User Auth Section -->
+                <div id="auth-section" class="auth-section">
+                    <button id="btn-show-login" class="btn btn-primary btn-sm">Giriş Yap</button>
+                    <div id="user-profile" class="user-profile hidden">
+                        <span id="user-name-display" class="user-name"></span>
+                        <button id="btn-teacher-panel" class="btn btn-outline btn-sm hidden">Öğretmen Paneli</button>
+                        <button id="btn-logout" class="btn btn-secondary btn-sm">Çıkış</button>
+                    </div>
+                </div>
+
                 <div id="progress-badge" class="progress-badge" title="Genel İlerleme">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -367,6 +382,65 @@
         </div>
     </div>
 
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content auth-modal-content">
+            <button class="modal-close" id="btn-close-auth">&times;</button>
+            <h2 id="auth-modal-title">Giriş Yap</h2>
+            
+            <div id="auth-error" class="auth-error hidden"></div>
+            
+            <form id="auth-form">
+                <div class="form-group name-group hidden" id="register-name-group">
+                    <label for="auth-name">Ad Soyad</label>
+                    <input type="text" id="auth-name" placeholder="Örn: Ahmet Yılmaz">
+                </div>
+                <div class="form-group">
+                    <label for="auth-email">E-posta</label>
+                    <input type="email" id="auth-email" required placeholder="ornek@okul.edu.tr">
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">Şifre</label>
+                    <input type="password" id="auth-password" required placeholder="En az 6 karakter">
+                </div>
+                <button type="submit" id="btn-auth-submit" class="btn btn-primary w-100">Giriş Yap</button>
+            </form>
+            
+            <div class="auth-switch" style="margin-top: 15px; text-align: center; font-size: 0.9rem;">
+                <span id="auth-switch-text">Hesabınız yok mu?</span>
+                <a href="#" id="auth-switch-link" style="color: var(--primary);">Kayıt Ol</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Panel Modal -->
+    <div id="teacher-modal" class="modal hidden">
+        <div class="modal-content teacher-modal-content" style="max-width: 800px; width: 90%;">
+            <button class="modal-close" id="btn-close-teacher">&times;</button>
+            <h2>Öğretmen Paneli</h2>
+            <p style="color:var(--text-muted); margin-bottom: 1rem;">Tüm öğrencilerin SQL eğitim platformundaki ilerlemeleri.</p>
+            
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="result-table w-100" id="teacher-students-table">
+                    <thead>
+                        <tr>
+                            <th>Öğrenci Adı</th>
+                            <th>E-posta</th>
+                            <th>Tamamlanan</th>
+                            <th>Başlangıç</th>
+                            <th>Orta</th>
+                            <th>İleri</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teacher-students-body">
+                        <!-- Öğrenci listesi buraya JS ile yüklenecek -->
+                        <tr><td colspan="6" style="text-align:center;">Öğrenciler yükleniyor...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- App Scripts (ES Modules) -->
     <script src="js/curriculum/beginner.js"></script>
     <script src="js/curriculum/intermediate.js"></script>
@@ -377,6 +451,8 @@
     <script src="js/editor.js"></script>
     <script src="js/lessons.js"></script>
     <script src="js/playground.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/teacher.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

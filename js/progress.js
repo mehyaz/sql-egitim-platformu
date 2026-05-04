@@ -13,6 +13,10 @@ const ProgressTracker = (function () {
         if (!completed.includes(lessonId)) {
             completed.push(lessonId);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
+            // Buluta kaydet
+            if (typeof AuthModule !== 'undefined') {
+                AuthModule.saveProgressToCloud(completed);
+            }
         }
         updateUI();
     }
@@ -37,6 +41,14 @@ const ProgressTracker = (function () {
 
     function reset() {
         localStorage.removeItem(STORAGE_KEY);
+        if (typeof AuthModule !== 'undefined') {
+            AuthModule.saveProgressToCloud([]); // Bulutta da sıfırla
+        }
+        updateUI();
+    }
+    
+    function resetUIOnly() {
+        // Yalnızca arayüzü günceller (Buluttan veri çekildiğinde kullanılır)
         updateUI();
     }
 
@@ -47,5 +59,5 @@ const ProgressTracker = (function () {
         }
     }
 
-    return { getCompleted, markComplete, isCompleted, getPercentage, getLevelPercentage, reset };
+    return { getCompleted, markComplete, isCompleted, getPercentage, getLevelPercentage, reset, resetUIOnly };
 })();
