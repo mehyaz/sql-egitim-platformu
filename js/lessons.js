@@ -43,7 +43,20 @@ const LessonsModule = (function () {
         if (lesson.database) {
             sampleSection.classList.remove('hidden');
             const schema = DatabaseEngine.getSchema(lesson.database);
-            const mainTables = schema.slice(0, 3); // Show first 3 tables
+            
+            // Konuyla alakalı tabloları metinden bul
+            const searchContext = (lesson.task + " " + lesson.description + " " + (lesson.expectedQuery || "") + " " + (lesson.checkTable || "")).toLowerCase();
+            let mainTables = schema.filter(t => {
+                const regex = new RegExp("\\b" + t.name.toLowerCase() + "\\b", "i");
+                return regex.test(searchContext);
+            });
+            
+            if (mainTables.length === 0) {
+                mainTables = schema.slice(0, 1); // Hiç bulunamazsa ilk tabloyu göster
+            } else {
+                mainTables = mainTables.slice(0, 3); // En fazla 3 tablo göster
+            }
+
             sampleContent.innerHTML = mainTables.map(t => {
                 const preview = DatabaseEngine.executeQuery(lesson.database, `SELECT * FROM ${t.name} LIMIT 3;`);
                 if (preview.error || !preview.columns.length) return '';
