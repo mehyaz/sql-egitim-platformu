@@ -213,12 +213,12 @@ Tablo oluştururken her sütuna doğru türü atamak çok önemlidir.`,
         description: `Tablolara veri eklemek için <code>INSERT INTO</code> kullanılır:<br><br>
 Tüm sütunlara veri girme:<br>
 <code>INSERT INTO tablo VALUES (değer1, değer2, ...);</code>`,
-        task: "Öğrenciler tablosuna yeni bir öğrenci ekleyin: ID 31, ad 'Ahmet', soyad 'Güneş', doğum tarihi '2002-05-10', şehir 'Konya', bölüm ID 1.",
+        task: "Öğrenciler tablosuna yeni bir öğrenci ekleyin: ID 51, ad 'Ahmet', soyad 'Güneş', doğum tarihi '2002-05-10', şehir 'Konya', bölüm ID 1.",
         database: "okul",
         initialCode: "",
         hints: ["INSERT INTO ogrenciler VALUES (...); şeklinde yazın.", "Metin değerleri tek tırnak içinde yazılır."],
-        solution: "INSERT INTO ogrenciler VALUES (31, 'Ahmet', 'Güneş', '2002-05-10', 'Konya', 1);",
-        checkType: "contains-value", checkQuery: "SELECT * FROM ogrenciler WHERE ogrenci_id = 31;", checkValue: "Ahmet"
+        solution: "INSERT INTO ogrenciler VALUES (51, 'Ahmet', 'Güneş', '2002-05-10', 'Konya', 1);",
+        checkType: "contains-value", checkQuery: "SELECT * FROM ogrenciler WHERE ogrenci_id = 51;", checkValue: "Ahmet"
     },
     {
         id: "6.2", topicId: 6, level: "beginner",
@@ -227,12 +227,12 @@ Tüm sütunlara veri girme:<br>
         description: `Belirli sütunlara veri girme:<br>
 <code>INSERT INTO tablo (sütun1, sütun2) VALUES (değer1, değer2);</code><br><br>
 Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.`,
-        task: "Müşteriler tablosuna sadece ad, soyad ve şehir belirterek müşteri ekleyin: musteri_id 16, ad 'Yasemin', soyad 'Çiçek', şehir 'Eskişehir'.",
+        task: "Müşteriler tablosuna sadece ad, soyad ve şehir belirterek müşteri ekleyin: musteri_id 21, ad 'Yasemin', soyad 'Çiçek', şehir 'Eskişehir'.",
         database: "eticaret",
         initialCode: "",
         hints: ["INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (...);", "email ve telefon NULL olacak."],
-        solution: "INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (16, 'Yasemin', 'Çiçek', 'Eskişehir');",
-        checkType: "contains-value", checkQuery: "SELECT * FROM musteriler WHERE musteri_id = 16;", checkValue: "Yasemin"
+        solution: "INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (21, 'Yasemin', 'Çiçek', 'Eskişehir');",
+        checkType: "contains-value", checkQuery: "SELECT * FROM musteriler WHERE musteri_id = 21;", checkValue: "Yasemin"
     },
     // ===== KONU 7: INSERT INTO KOMUTU =====
     {
@@ -242,12 +242,12 @@ Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.`,
         description: `<code>INSERT INTO</code> komutunun temel kullanımı:<br><br>
 <code>INSERT INTO tablo_adi (sütun1, sütun2) VALUES (değer1, değer2);</code><br><br>
 Metin değerleri <strong>tek tırnak</strong> içinde, sayısal değerler doğrudan yazılır.`,
-        task: "Yazarlar tablosuna yeni bir yazar ekleyin: yazar_id 9, ad 'Nazım', soyad 'Hikmet', ulke 'Türkiye'.",
+        task: "Yazarlar tablosuna yeni bir yazar ekleyin: yazar_id 20, ad 'Nazım', soyad 'Hikmet', ulke 'Türkiye'.",
         database: "kutuphane",
         initialCode: "",
         hints: ["INSERT INTO yazarlar VALUES (...); şeklinde yazın.", "Metin değerlerini tek tırnak içinde yazın."],
-        solution: "INSERT INTO yazarlar VALUES (9, 'Nazım', 'Hikmet', 'Türkiye');",
-        checkType: "contains-value", checkQuery: "SELECT * FROM yazarlar WHERE yazar_id = 9;", checkValue: "Nazım"
+        solution: "INSERT INTO yazarlar VALUES (20, 'Nazım', 'Hikmet', 'Türkiye');",
+        checkType: "contains-value", checkQuery: "SELECT * FROM yazarlar WHERE yazar_id = 20;", checkValue: "Nazım"
     },
     {
         id: "7.2", topicId: 7, level: "beginner",
@@ -267,12 +267,12 @@ Metin değerleri <strong>tek tırnak</strong> içinde, sayısal değerler doğru
         title: "INSERT INTO — Seçici Sütunlarla Ekleme",
         topicTitle: "INSERT INTO Komutu",
         description: `Sadece belirli sütunlara veri girmek istediğinizde sütun adlarını belirtirsiniz. Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.`,
-        task: "Ürünler tablosuna sadece urun_id, urun_adi ve fiyat belirterek yeni ürün ekleyin: (26, 'USB Kablo', 49.90).",
+        task: "Ürünler tablosuna sadece urun_id, urun_adi ve fiyat belirterek yeni ürün ekleyin: (41, 'USB Kablo', 49.90).",
         database: "eticaret",
         initialCode: "",
         hints: ["INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (...);", "stok ve kategori_id NULL olacak."],
-        solution: "INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (26, 'USB Kablo', 49.90);",
-        checkType: "contains-value", checkQuery: "SELECT * FROM urunler WHERE urun_id = 26;", checkValue: "USB"
+        solution: "INSERT INTO urunler (urun_id, urun_adi, fiyat) VALUES (41, 'USB Kablo', 49.90);",
+        checkType: "contains-value", checkQuery: "SELECT * FROM urunler WHERE urun_id = 41;", checkValue: "USB"
     },
     // ===== KONU 8: SELECT KOMUTU =====
     {

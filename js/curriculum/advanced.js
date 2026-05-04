@@ -109,13 +109,13 @@ Bu ilişki için <strong>ara tablo</strong> (junction table) kullanılır: <code
 1. Önce <strong>ana tablo</strong>ya (parent) veri girin<br>
 2. Sonra <strong>bağımlı tablo</strong>ya (child) veri girin<br><br>
 Örneğin önce bölüm oluşturulmalı, sonra o bölüme öğrenci eklenmelidir.`,
-        task: "Önce bölümler tablosuna yeni bir bölüm ekleyin (6, 'Fizik', 'Fen-Edebiyat'), sonra bu bölüme bir öğrenci ekleyin (22, 'Aylin', 'Koca', '2003-04-15', 'Mersin', 6).",
+        task: "Önce bölümler tablosuna yeni bir bölüm ekleyin (6, 'Fizik', 'Fen-Edebiyat'), sonra bu bölüme bir öğrenci ekleyin (52, 'Aylin', 'Koca', '2003-04-15', 'Mersin', 6).",
         database: "okul",
         initialCode: "",
         hints: ["İki INSERT komutunu sırayla yazın.", "Önce bölüm (bolum_id=6), sonra öğrenci (bolum_id=6)."],
-        solution: "INSERT INTO bolumler VALUES (6, 'Fizik', 'Fen-Edebiyat');\nINSERT INTO ogrenciler VALUES (22, 'Aylin', 'Koca', '2003-04-15', 'Mersin', 6);",
+        solution: "INSERT INTO bolumler VALUES (6, 'Fizik', 'Fen-Edebiyat');\nINSERT INTO ogrenciler VALUES (52, 'Aylin', 'Koca', '2003-04-15', 'Mersin', 6);",
         checkType: "contains-value",
-        checkQuery: "SELECT o.ad, b.bolum_adi FROM ogrenciler o JOIN bolumler b ON o.bolum_id = b.bolum_id WHERE o.ogrenci_id = 22;",
+        checkQuery: "SELECT o.ad, b.bolum_adi FROM ogrenciler o JOIN bolumler b ON o.bolum_id = b.bolum_id WHERE o.ogrenci_id = 52;",
         checkValue: "Aylin"
     },
     {
@@ -125,11 +125,11 @@ Bu ilişki için <strong>ara tablo</strong> (junction table) kullanılır: <code
         description: `Referans bütünlüğü (referential integrity), FOREIGN KEY'lerin geçerli değerlere sahip olmasını garanti eder.<br><br>
 Olmayan bir bölüm ID'si ile öğrenci eklemeye çalışırsanız hata alırsınız (FOREIGN KEY constraint ihlali).<br><br>
 Bu ders E-Ticaret veritabanında sipariş eklemeyi uygulamanızı ister.`,
-        task: "E-Ticaret veritabanında müşteri 1 için yeni bir sipariş (21, tarih '2024-04-01', tutar 1599.80, durum 'Hazırlanıyor') ve sipariş detayı (29, siparis_id 21, urun_id 3, miktar 1, birim_fiyat 1299.00) ekleyin.",
+        task: "E-Ticaret veritabanında müşteri 1 için yeni bir sipariş (21, tarih '2024-04-01', tutar 1599.80, durum 'Hazırlanıyor') ve sipariş detayı (31, siparis_id 21, urun_id 3, miktar 1, birim_fiyat 1299.00) ekleyin.",
         database: "eticaret",
         initialCode: "",
-        hints: ["Önce siparisler tablosuna, sonra siparis_detaylari tablosuna INSERT yapın.", "Sipariş ID'si 21 ve detay ID'si 29 olmalı."],
-        solution: "INSERT INTO siparisler VALUES (21, 1, '2024-04-01', 1599.80, 'Hazırlanıyor');\nINSERT INTO siparis_detaylari VALUES (29, 21, 3, 1, 1299.00);",
+        hints: ["Önce siparisler tablosuna, sonra siparis_detaylari tablosuna INSERT yapın.", "Sipariş ID'si 21 ve detay ID'si 31 olmalı."],
+        solution: "INSERT INTO siparisler VALUES (21, 1, '2024-04-01', 1599.80, 'Hazırlanıyor');\nINSERT INTO siparis_detaylari VALUES (31, 21, 3, 1, 1299.00);",
         checkType: "contains-value",
         checkQuery: "SELECT s.siparis_id, sd.urun_id FROM siparisler s JOIN siparis_detaylari sd ON s.siparis_id = sd.siparis_id WHERE s.siparis_id = 21;",
         checkValue: "21"
