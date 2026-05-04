@@ -150,6 +150,13 @@ const LessonsModule = (function () {
 
         const lesson = currentLesson;
 
+        // ÖNEMLİ DÜZELTME: Öğrenci önceden "Sorguyu Çalıştır" dediyse (INSERT, UPDATE vb. yaptıysa), 
+        // veritabanı o haliyle kalmış olabilir. 
+        // Cevabı kontrol etmeden önce veritabanını sıfırlayalım ki temiz bir sayfada test edelim.
+        if (lesson.database) {
+            DatabaseEngine.resetDatabase(lesson.database);
+        }
+
         // First run the student's query
         const studentResult = DatabaseEngine.executeQuery(lesson.database, sql);
 
