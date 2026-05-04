@@ -18,6 +18,11 @@ const LessonsModule = (function () {
         currentLesson = lesson;
         hintIndex = 0;
 
+        // Her adımda veritabanını sıfırlayarak bir önceki adımın yan etkilerini (örn: oluşturulan tabloları) temizle
+        if (lesson.database) {
+            DatabaseEngine.resetDatabase(lesson.database);
+        }
+
         // Hide welcome, show lesson
         document.getElementById('welcome-screen').classList.add('hidden');
         document.getElementById('active-lesson').classList.remove('hidden');
