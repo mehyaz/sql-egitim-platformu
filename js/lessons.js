@@ -44,17 +44,38 @@ const LessonsModule = (function () {
             sampleSection.classList.remove('hidden');
             const schema = DatabaseEngine.getSchema(lesson.database);
             
-            // Konuyla alakalı tabloları metinden bul
-            const searchContext = (lesson.task + " " + lesson.description + " " + (lesson.expectedQuery || "") + " " + (lesson.checkTable || "")).toLowerCase();
-            let mainTables = schema.filter(t => {
-                const regex = new RegExp("\\b" + t.name.toLowerCase() + "\\b", "i");
-                return regex.test(searchContext);
-            });
+            // Akıllı Filtreleme: Beklenen sorgu, başlangıç kodu veya hedef tablodan tablo adlarını çıkar
+            let sqlTexts = [
+                lesson.expectedQuery || "",
+                lesson.initialCode || "",
+                lesson.checkQuery || ""
+            ].join(" ");
+            
+            let explicitTables = [];
+            if (lesson.checkTable) explicitTables.push(lesson.checkTable.toLowerCase());
+
+            // SQL içindeki FROM, JOIN, INTO, UPDATE, TABLE kelimelerinden sonraki kelimeyi yakala
+            const regex = /(?:FROM|JOIN|INTO|UPDATE|TABLE)\s+([a-zA-Z0-9_]+)/gi;
+            let match;
+            while ((match = regex.exec(sqlTexts)) !== null) {
+                if (match[1]) explicitTables.push(match[1].toLowerCase());
+            }
+
+            let mainTables = schema.filter(t => explicitTables.includes(t.name.toLowerCase()));
             
             if (mainTables.length === 0) {
-                mainTables = schema.slice(0, 1); // Hiç bulunamazsa ilk tabloyu göster
+                // Eğer SQL sorgularından tablo adı bulunamadıysa metin içinde (soruda) geçip geçmediğine bak
+                const searchContext = (lesson.task + " " + lesson.description).toLowerCase();
+                mainTables = schema.filter(t => {
+                    const wordRegex = new RegExp("\\b" + t.name.toLowerCase() + "\\b", "i");
+                    return wordRegex.test(searchContext);
+                });
+            }
+            
+            if (mainTables.length === 0) {
+                mainTables = schema.slice(0, 1); // Hiçbir şekilde bulunamazsa en azından 1 tablo göster
             } else {
-                mainTables = mainTables.slice(0, 3); // En fazla 3 tablo göster
+                mainTables = mainTables.slice(0, 3); // En fazla 3 tablo göster (ekran dolmasın diye)
             }
 
             sampleContent.innerHTML = mainTables.map(t => {
