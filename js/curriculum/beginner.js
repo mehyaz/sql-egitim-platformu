@@ -227,12 +227,12 @@ Tüm sütunlara veri girme:<br>
         description: `Belirli sütunlara veri girme:<br>
 <code>INSERT INTO tablo (sütun1, sütun2) VALUES (değer1, değer2);</code><br><br>
 Belirtilmeyen sütunlar NULL veya DEFAULT değerini alır.`,
-        task: "Müşteriler tablosuna sadece ad, soyad ve şehir belirterek müşteri ekleyin: musteri_id 21, ad 'Yasemin', soyad 'Çiçek', şehir 'Eskişehir'.",
+        task: "Müşteriler tablosuna sadece ad, soyad ve şehir belirterek müşteri ekleyin: musteri_id 101, ad 'Yasemin', soyad 'Çiçek', şehir 'Eskişehir'.",
         database: "eticaret",
         initialCode: "",
         hints: ["INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (...);", "email ve telefon NULL olacak."],
-        solution: "INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (21, 'Yasemin', 'Çiçek', 'Eskişehir');",
-        checkType: "contains-value", checkQuery: "SELECT * FROM musteriler WHERE musteri_id = 21;", checkValue: "Yasemin"
+        solution: "INSERT INTO musteriler (musteri_id, ad, soyad, sehir) VALUES (101, 'Yasemin', 'Çiçek', 'Eskişehir');",
+        checkType: "contains-value", checkQuery: "SELECT * FROM musteriler WHERE musteri_id = 101;", checkValue: "Yasemin"
     },
     // ===== KONU 7: INSERT INTO KOMUTU =====
     {

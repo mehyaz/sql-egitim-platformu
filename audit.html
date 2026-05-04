@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Curriculum Audit</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <script src="js/curriculum/beginner.js"></script>
+    <script src="js/curriculum/intermediate.js"></script>
+    <script src="js/curriculum/advanced.js"></script>
+    <script src="js/database.js"></script>
+</head>
+<body>
+    <h1>Audit Log</h1>
+    <pre id="log"></pre>
+    <script>
+        function log(msg) {
+            document.getElementById('log').textContent += msg + '\n';
+        }
+
+        function compareResults(r1, r2) {
+            if (r1.error || r2.error) return false;
+            if (r1.columns.length !== r2.columns.length) return false;
+            for (let i = 0; i < r1.columns.length; i++) {
+                if (r1.columns[i] !== r2.columns[i]) return false;
+            }
+            if (r1.values.length !== r2.values.length) return false;
+            for (let i = 0; i < r1.values.length; i++) {
+                if (r1.values[i].length !== r2.values[i].length) return false;
+                for (let j = 0; j < r1.values[i].length; j++) {
+                    if (String(r1.values[i][j]) !== String(r2.values[i][j])) return false;
+                }
+            }
+            return true;
+        }
+
+        async function runAudit() {
+            log("Starting audit...");
+            await DatabaseEngine.init();
+            log("Database Engine initialized.");
+
+            const allLessons = [...BeginnerLessons, ...IntermediateLessons, ...AdvancedLessons];
+            let errors = 0;
+
+            for (let lesson of allLessons) {
+                if (!lesson.solution) continue;
+                
+                DatabaseEngine.resetDatabase(lesson.database);
+                const sql = lesson.solution;
+                const studentResult = DatabaseEngine.executeQuery(lesson.database, sql);
+
+                let correct = false;
+                let errorMsg = studentResult.error || "";
+
+                if (!errorMsg) {
+                    try {
+                        switch (lesson.checkType) {
+                            case 'run-only':
+                                correct = true;
+                                break;
+                            case 'result':
+                                if (lesson.expectedQuery) {
+                                    const expected = DatabaseEngine.executeQuery(lesson.database, lesson.expectedQuery);
+                                    if (expected.error) errorMsg = "ExpectedQuery failed: " + expected.error;
+                                    else correct = compareResults(studentResult, expected);
+                                } else {
+                                    correct = true;
+                                }
+                                break;
+                            case 'contains-value':
+                                if (lesson.checkQuery) {
+                                    const checkResult = DatabaseEngine.executeQuery(lesson.database, lesson.checkQuery);
+                                    if (checkResult.error) errorMsg = "CheckQuery failed: " + checkResult.error;
+                                    else correct = checkResult.values && checkResult.values.some(row => row.some(v => String(v).includes(lesson.checkValue)));
+                                } else {
+                                    correct = studentResult.values && studentResult.values.some(row => row.some(v => String(v).includes(lesson.checkValue)));
+                                }
+                                break;
+                            case 'structure':
+                                const tableInfo = DatabaseEngine.executeQuery(lesson.database, `PRAGMA table_info('${lesson.checkTable}');`);
+                                if (tableInfo.values) {
+                                    const colNames = tableInfo.values.map(r => r[1].toLowerCase());
+                                    correct = lesson.checkColumns.every(c => colNames.includes(c.toLowerCase()));
+                                }
+                                break;
+                            case 'structure-contains':
+                                const tInfo = DatabaseEngine.executeQuery(lesson.database, `PRAGMA table_info('${lesson.checkTable}');`);
+                                if (tInfo.values) {
+                                    const cols = tInfo.values.map(r => r[1].toLowerCase());
+                                    correct = lesson.checkColumns.every(c => cols.includes(c.toLowerCase()));
+                                }
+                                break;
+                            case 'run-check':
+                                const check = DatabaseEngine.executeQuery(lesson.database, lesson.checkQuery);
+                                if (check.error) errorMsg = "CheckQuery failed: " + check.error;
+                                else correct = check.values && check.values.some(row => row.some(v => String(v) === String(lesson.checkValue)));
+                                break;
+                            default:
+                                correct = true;
+                        }
+                    } catch (e) {
+                        errorMsg = "Exception: " + e.message;
+                    }
+                }
+
+                if (!correct) {
+                    errors++;
+                    log(`\n❌ Lesson ${lesson.id} [${lesson.level}] FAILED`);
+                    if (errorMsg) log("   Error: " + errorMsg);
+                    else log(`   Validation failed. Type: ${lesson.checkType}`);
+                }
+            }
+
+            log(`\nAudit complete. Found ${errors} failing lessons.`);
+            document.title = "DONE";
+        }
+
+        window.onload = runAudit;
+    </script>
+</body>
+</html>

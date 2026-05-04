@@ -125,14 +125,14 @@ Bu ilişki için <strong>ara tablo</strong> (junction table) kullanılır: <code
         description: `Referans bütünlüğü (referential integrity), FOREIGN KEY'lerin geçerli değerlere sahip olmasını garanti eder.<br><br>
 Olmayan bir bölüm ID'si ile öğrenci eklemeye çalışırsanız hata alırsınız (FOREIGN KEY constraint ihlali).<br><br>
 Bu ders E-Ticaret veritabanında sipariş eklemeyi uygulamanızı ister.`,
-        task: "E-Ticaret veritabanında müşteri 1 için yeni bir sipariş (21, tarih '2024-04-01', tutar 1599.80, durum 'Hazırlanıyor') ve sipariş detayı (31, siparis_id 21, urun_id 3, miktar 1, birim_fiyat 1299.00) ekleyin.",
+        task: "E-Ticaret veritabanında müşteri 1 için yeni bir sipariş (101, tarih '2024-04-01', tutar 1599.80, durum 'Hazırlanıyor') ve sipariş detayı (101, siparis_id 101, urun_id 3, miktar 1, birim_fiyat 1299.00) ekleyin.",
         database: "eticaret",
         initialCode: "",
-        hints: ["Önce siparisler tablosuna, sonra siparis_detaylari tablosuna INSERT yapın.", "Sipariş ID'si 21 ve detay ID'si 31 olmalı."],
-        solution: "INSERT INTO siparisler VALUES (21, 1, '2024-04-01', 1599.80, 'Hazırlanıyor');\nINSERT INTO siparis_detaylari VALUES (31, 21, 3, 1, 1299.00);",
+        hints: ["Önce siparisler tablosuna, sonra siparis_detaylari tablosuna INSERT yapın.", "Sipariş ID'si 101 ve detay ID'si 101 olmalı."],
+        solution: "INSERT INTO siparisler VALUES (101, 1, '2024-04-01', 1599.80, 'Hazırlanıyor');\nINSERT INTO siparis_detaylari VALUES (101, 101, 3, 1, 1299.00);",
         checkType: "contains-value",
-        checkQuery: "SELECT s.siparis_id, sd.urun_id FROM siparisler s JOIN siparis_detaylari sd ON s.siparis_id = sd.siparis_id WHERE s.siparis_id = 21;",
-        checkValue: "21"
+        checkQuery: "SELECT s.siparis_id, sd.urun_id FROM siparisler s JOIN siparis_detaylari sd ON s.siparis_id = sd.siparis_id WHERE s.siparis_id = 101;",
+        checkValue: "101"
     },
     {
         id: "21.1", topicId: 21, level: "advanced",
