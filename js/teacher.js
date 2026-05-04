@@ -21,19 +21,30 @@ const TeacherModule = (function () {
         });
     }
 
-    function loadStudentsData() {
+    async function loadStudentsData() {
         const tbody = document.getElementById('teacher-students-body');
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Veriler yükleniyor...</td></tr>';
 
         const db = firebase.firestore();
-        
-        // Sadece öğretmenler görebileceği için (Firebase rule ile kısıtlanabilir), basit bir snapshot listener ekliyoruz.
-        // Gerçek zamanlı olarak verileri çeker.
-        unsubscribe = db.collection('users').orderBy('name').onSnapshot(snapshot => {
-            if (snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Henüz kayıtlı öğrenci yok.</td></tr>';
+        const currentUser = firebase.auth().currentUser;
+        if (!currentUser) return;
+
+        try {
+            // Önce öğretmenin kodunu al
+            const teacherDoc = await db.collection('users').doc(currentUser.uid).get();
+            if (!teacherDoc.exists || !teacherDoc.data().ownsClassCode) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--error);">Sınıf kodunuz bulunamadı. Lütfen profil ayarlarından oluşturun.</td></tr>';
                 return;
             }
+            
+            const myClassCode = teacherDoc.data().ownsClassCode;
+            
+            // Sadece öğretmenin kodunu girmiş öğrencileri dinle
+            unsubscribe = db.collection('users').where('classCode', '==', myClassCode).onSnapshot(snapshot => {
+                if (snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Sınıf kodunuzla (<b>${myClassCode}</b>) kayıt olmuş henüz bir öğrenci yok.</td></tr>`;
+                    return;
+                }
 
             let html = '';
             
@@ -94,6 +105,10 @@ const TeacherModule = (function () {
             console.error("Öğrenci verileri alınamadı:", error);
             tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--error);">Veriler alınırken hata oluştu: ${error.message}</td></tr>`;
         });
+        } catch (e) {
+            console.error("Öğretmen verisi alınamadı:", e);
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--error);">Sınıf bilgisi yüklenirken hata oluştu: ${e.message}</td></tr>`;
+        }
     }
 
     return { init };

@@ -84,7 +84,9 @@
                 <div id="auth-section" class="auth-section">
                     <button id="btn-show-login" class="btn btn-primary btn-sm">Giriş Yap</button>
                     <div id="user-profile" class="user-profile hidden">
-                        <span id="user-name-display" class="user-name"></span>
+                        <button id="btn-profile" class="btn btn-icon btn-sm" title="Profil & Ayarlar">
+                            <span id="user-name-display" class="user-name"></span>
+                        </button>
                         <button id="btn-teacher-panel" class="btn btn-outline btn-sm hidden">Öğretmen Paneli</button>
                         <button id="btn-logout" class="btn btn-secondary btn-sm">Çıkış</button>
                     </div>
@@ -395,6 +397,10 @@
                     <label for="auth-name">Ad Soyad</label>
                     <input type="text" id="auth-name" placeholder="Örn: Ahmet Yılmaz">
                 </div>
+                <div class="form-group code-group hidden" id="register-code-group">
+                    <label for="auth-class-code">Sınıf Kodu (İsteğe Bağlı)</label>
+                    <input type="text" id="auth-class-code" placeholder="Öğretmeninizin verdiği kod">
+                </div>
                 <div class="form-group">
                     <label for="auth-email">E-posta</label>
                     <input type="email" id="auth-email" required placeholder="ornek@okul.edu.tr">
@@ -437,6 +443,36 @@
                         <tr><td colspan="6" style="text-align:center;">Öğrenciler yükleniyor...</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile & Settings Modal -->
+    <div id="profile-modal" class="modal hidden">
+        <div class="modal-content profile-modal-content">
+            <button class="modal-close" id="btn-close-profile">&times;</button>
+            <h2>Profil & Ayarlar</h2>
+            
+            <div id="profile-student-section" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <h3 style="margin-top: 0;">Öğrenci Ayarları</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Öğretmeninizin sizin ilerlemenizi takip edebilmesi için verdiği sınıf kodunu aşağıya girin.</p>
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <input type="text" id="profile-class-code" placeholder="Sınıf Kodu (Örn: ABC123)">
+                    <button id="btn-update-class-code" class="btn btn-primary">Kaydet</button>
+                </div>
+                <div id="profile-student-msg" style="font-size: 0.85rem;"></div>
+            </div>
+
+            <div id="profile-teacher-section" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card);">
+                <h3 style="margin-top: 0;">Öğretmen Ayarları</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Öğrencilerinizin ilerlemelerini takip etmek için bir sınıf kodu oluşturun. Öğrencileriniz kayıt olurken veya profillerinden bu kodu girdiklerinde panellerinizde görünecektir.</p>
+                
+                <div id="teacher-code-display" class="hidden" style="margin-bottom: 15px; padding: 10px; background: var(--bg-color); border-radius: 6px; text-align: center;">
+                    Sınıf Kodunuz: <strong id="teacher-owns-code" style="font-size: 1.2rem; letter-spacing: 2px; color: var(--primary);"></strong>
+                </div>
+
+                <button id="btn-generate-class-code" class="btn btn-outline w-100">Yeni Sınıf Kodu Üret</button>
+                <div id="profile-teacher-msg" style="font-size: 0.85rem; margin-top: 10px;"></div>
             </div>
         </div>
     </div>
