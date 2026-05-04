@@ -1,42 +1,45 @@
-# SQL Eğitim Platformu 🗃️
+# SQL Öğreniyorum - Eğitim Platformu 🗃️
 
-Türkçe, interaktif, tarayıcı tabanlı SQL öğrenme platformu. Sıfırdan ileri seviyeye SQL öğrenin.
+Türkçe, interaktif, tarayıcı tabanlı SQL öğrenme platformu. Sıfırdan ileri seviyeye SQL'i pratik yaparak, anında geri bildirim alarak öğrenin.
 
 ## 🌐 Canlı Demo
 
-**[https://mehyaz.github.io/sql-egitim-platformu/](https://mehyaz.github.io/sql-egitim-platformu/)**
+**[https://sqlogreniyorum.web.app](https://sqlogreniyorum.web.app)**
 
 ## ✨ Özellikler
 
-- **42+ Alıştırma** — 3 seviyede yapılandırılmış müfredat (Başlangıç, Orta, İleri)
-- **3 Örnek Veritabanı** — Okul, E-Ticaret, Kütüphane
-- **Gerçek SQL Çalıştırma** — Tarayıcıda sql.js (SQLite WebAssembly) ile
-- **SQL Playground** — Serbest SQL sorgu çalıştırma modu
-- **İlerleme Takibi** — localStorage ile otomatik kayıt
-- **İpucu ve Çözüm** — Her alıştırmada yardım sistemi
-- **Şema Gezgini** — Tablo yapılarını görüntüleme
-- **Responsive Tasarım** — Masaüstü ve mobilde çalışır
+- **Geniş Kapsamlı Müfredat** — 3 seviyede (Başlangıç, Orta, İleri) yapılandırılmış, 30'dan fazla alıştırma.
+- **Gerçek Zamanlı SQL Motoru** — Tarayıcıda `sql.js` (SQLite WebAssembly) ile harici bir sunucuya ihtiyaç duymadan hızlı SQL çalıştırma.
+- **3 Gerçekçi Veritabanı** — Okul, E-Ticaret ve Kütüphane senaryolarına özel tablolar ve veriler üzerinde pratik yapma.
+- **Akıllı İlerleme Takibi** — 
+  - **Yeşil Tik (✓)**: Soruyu tamamen kendi başınıza çözdüğünüzde kazanırsınız.
+  - **Sarı Tik (✓)**: Eğitmenden veya "Çözümü Göster" butonundan yardım alarak çözdüğünüzde kazanırsınız. Yardım alarak çözdükten sonra tekrar kendi başınıza çözerseniz Sarı Tik, Yeşil Tik'e dönüşür!
+- **Bulut Senkronizasyonu (Yeni!)** — Firebase Authentication ile kayıt/giriş yapın ve ilerlemenizi bulutta saklayın. Farklı cihazlardan eğitiminize kaldığınız yerden devam edin.
+- **Gelişmiş İpucu ve Çözüm Sistemi** — Takıldığınız yerde adım adım ipuçları ve detaylı çözümler.
+- **SQL Playground** — Serbest SQL sorguları çalıştırabileceğiniz, veritabanı tablolarının şemasını inceleyebileceğiniz özel kum havuzu.
+- **Platform Denetim Aracı (Audit)** — Platformdaki tüm derslerin, çözüm sorgularının ve veri bütünlüğünün otomatik test edildiği dahili test sistemi (`audit.html`).
 
-## 🛠 Teknoloji
+## 🛠 Teknoloji Yığını
 
 | Bileşen | Teknoloji |
 |---------|-----------|
-| SQL Motoru | sql.js v1.12.0 (SQLite WebAssembly) |
-| Arayüz | Vanilla HTML/CSS/JavaScript |
-| Font | Inter (Google Fonts) |
-| Hosting | GitHub Pages |
-| Dağıtım | GitHub Actions |
+| **SQL Motoru** | `sql.js` v1.12.0 (SQLite WebAssembly) |
+| **Arayüz** | Vanilla HTML, CSS, JavaScript |
+| **Veritabanı (Bulut)** | Firebase Firestore |
+| **Kimlik Doğrulama** | Firebase Auth |
+| **Hosting** | Firebase Hosting |
 
-## 🏗 Mimari
+## 🏗 Mimari ve Çalışma Mantığı
 
-Tamamen istemci taraflı (client-side) statik uygulama. Sunucu tarafı işlem yok.
+Uygulamanın büyük bir kısmı istemci tarafında (client-side) çalışır ve sunucu yükünü minimize eder:
 
-- SQL sorguları tarayıcıda WebAssembly ile çalıştırılır
-- Veritabanları sayfa yüklendiğinde bellekte oluşturulur
-- İlerleme localStorage'da saklanır
-- Tüm bağımlılıklar CDN üzerinden yüklenir
+1. **İstemci Taraflı Veritabanı**: SQL sorguları tarayıcıda WebAssembly (WASM) kullanılarak çalıştırılır.
+2. **Durum Yönetimi (State)**: Öğrencilerin veritabanı üzerinde yaptığı değişiklikler (INSERT, UPDATE, vb.) bir sonraki derste sıfırlanır (`DatabaseEngine.resetDatabase()`). Böylece hiçbir ders birbirinin verisini veya "UNIQUE" kısıtlamalarını bozmaz.
+3. **Senkronizasyon**: İlerleme önce localStorage'a kaydedilir, oturum açılmışsa eş zamanlı olarak Firebase Firestore'a gönderilir (`AuthModule.saveProgressToCloud()`).
 
 ## 🚀 Yerel Çalıştırma
+
+Projeyi bilgisayarınızda çalıştırmak için:
 
 ```bash
 # Projeyi klonlayın
@@ -45,43 +48,33 @@ cd sql-egitim-platformu
 
 # Herhangi bir HTTP sunucusu ile çalıştırın
 python3 -m http.server 8080
-# veya
+# veya Node.js ile
 npx serve .
 ```
 
-Tarayıcıda `http://localhost:8080` adresini açın.
+Tarayıcıda `http://localhost:8080` adresini açın. Test sistemini çalıştırmak için `http://localhost:8080/audit.html` adresine gidebilirsiniz.
 
 ## 📚 Müfredat
 
-21 zorunlu konu, 3 seviyede:
+Müfredat, SQL öğrenimini en temelden ileri seviye ilişkilere kadar kapsar:
 
 ### Başlangıç
-1. Veri Türleri
-2. Veri Tabanı Oluşturma
-3. Anahtarlar ve İndeksler
-4. Tablo İşlemleri
-5. Tablo Oluşturma
-6. Tablolara Veri Girişi
-7. INSERT INTO Komutu
-8. SELECT Komutu
+- Veri Türleri ve Tablo Oluşturma
+- Tablolara Veri Girişi (`INSERT INTO`)
+- Temel Seçim Sorguları (`SELECT`)
 
 ### Orta
-9. Karşılaştırma Operatörleri
-10. WHERE Şart İfadesi
-11. Mantıksal Operatörler
-12. Hesaplama Fonksiyonları
-13. LIKE Komutu
-14. ORDER BY Komutu
-15. UPDATE Komutu
-16. DELETE Komutu
+- Karşılaştırma ve Mantıksal Operatörler
+- Filtreleme (`WHERE`)
+- Hesaplama Fonksiyonları ve Patern Eşleştirme (`LIKE`)
+- Veri Güncelleme ve Silme (`UPDATE`, `DELETE`)
+- Sıralama (`ORDER BY`)
 
 ### İleri
-17. İlişkisel Veri Tabanı
-18. İlişkisel VT Tasarımı
-19. Tablolar Arası İlişkiler
-20. İlişkisel VT Veri Girişi
-21. İlişkisel VT Sorgular
+- İlişkisel Veritabanı Tasarımı
+- Tablolar Arası İlişkiler ve Birleştirme (`JOIN` işlemleri)
+- İlişkisel Tablolara Veri Ekleme ve Gelişmiş Sorgular
 
 ## 📄 Lisans
 
-MIT
+Bu proje MIT Lisansı ile lisanslanmıştır. Serbestçe kullanılabilir, değiştirilebilir ve dağıtılabilir.
