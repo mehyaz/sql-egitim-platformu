@@ -1,6 +1,7 @@
 // ========== PROGRESS TRACKER ==========
 const ProgressTracker = (function () {
     const STORAGE_KEY = 'sql_egitim_progress';
+    const ASSISTED_KEY = 'sql_egitim_assisted';
 
     function getCompleted() {
         try {
@@ -8,14 +9,37 @@ const ProgressTracker = (function () {
         } catch { return []; }
     }
 
-    function markComplete(lessonId) {
+    function getAssisted() {
+        try {
+            return JSON.parse(localStorage.getItem(ASSISTED_KEY)) || [];
+        } catch { return []; }
+    }
+
+    function markComplete(lessonId, isAssisted = false) {
         const completed = getCompleted();
+        const assisted = getAssisted();
+        let changed = false;
+
         if (!completed.includes(lessonId)) {
             completed.push(lessonId);
+            changed = true;
+        }
+
+        if (isAssisted && !assisted.includes(lessonId)) {
+            assisted.push(lessonId);
+            changed = true;
+        } else if (!isAssisted && assisted.includes(lessonId)) {
+            // Kendi başına çözdüyse yardımlılardan çıkar
+            assisted.splice(assisted.indexOf(lessonId), 1);
+            changed = true;
+        }
+
+        if (changed) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
+            localStorage.setItem(ASSISTED_KEY, JSON.stringify(assisted));
             // Buluta kaydet
             if (typeof AuthModule !== 'undefined') {
-                AuthModule.saveProgressToCloud(completed);
+                AuthModule.saveProgressToCloud(completed, assisted);
             }
         }
         updateUI();
@@ -23,6 +47,10 @@ const ProgressTracker = (function () {
 
     function isCompleted(lessonId) {
         return getCompleted().includes(lessonId);
+    }
+
+    function isAssisted(lessonId) {
+        return getAssisted().includes(lessonId);
     }
 
     function getPercentage(allLessons) {
@@ -41,8 +69,9 @@ const ProgressTracker = (function () {
 
     function reset() {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(ASSISTED_KEY);
         if (typeof AuthModule !== 'undefined') {
-            AuthModule.saveProgressToCloud([]); // Bulutta da sıfırla
+            AuthModule.saveProgressToCloud([], []); // Bulutta da sıfırla
         }
         updateUI();
     }
@@ -59,5 +88,5 @@ const ProgressTracker = (function () {
         }
     }
 
-    return { getCompleted, markComplete, isCompleted, getPercentage, getLevelPercentage, reset, resetUIOnly };
+    return { getCompleted, getAssisted, markComplete, isCompleted, isAssisted, getPercentage, getLevelPercentage, reset, resetUIOnly };
 })();

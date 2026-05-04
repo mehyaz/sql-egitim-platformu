@@ -3,6 +3,7 @@ const LessonsModule = (function () {
     let allLessons = [];
     let currentLesson = null;
     let hintIndex = 0;
+    let solutionViewedForCurrentLesson = false;
 
     function init() {
         allLessons = [...BeginnerLessons, ...IntermediateLessons, ...AdvancedLessons];
@@ -17,6 +18,7 @@ const LessonsModule = (function () {
         if (!lesson) return;
         currentLesson = lesson;
         hintIndex = 0;
+        solutionViewedForCurrentLesson = false;
 
         // Her adımda veritabanını sıfırlayarak bir önceki adımın yan etkilerini (örn: oluşturulan tabloları) temizle
         if (lesson.database) {
@@ -226,8 +228,7 @@ const LessonsModule = (function () {
 
         if (correct) {
             showFeedback('success', '✅ Doğru!', 'Tebrikler! Bu alıştırmayı başarıyla tamamladınız. Sonraki derse geçebilirsiniz.');
-            ProgressTracker.markComplete(lesson.id);
-            updateNavCompletion(lesson.id);
+            ProgressTracker.markComplete(lesson.id, solutionViewedForCurrentLesson);
         } else {
             showFeedback('error', '❌ Tam Doğru Değil', 'Sonucunuz beklenen sonuçla eşleşmiyor. İpucu alarak tekrar deneyin!');
         }
@@ -246,6 +247,7 @@ const LessonsModule = (function () {
     function showSolution() {
         if (!currentLesson) return;
         SQLEditor.setValue('lesson-editor', currentLesson.solution);
+        solutionViewedForCurrentLesson = true;
         showFeedback('warning', '👁 Çözüm Gösterildi', 'Çözüm editöre yerleştirildi. Kendiniz yazarak öğrenmeniz daha faydalı olacaktır!');
     }
 
@@ -300,14 +302,7 @@ const LessonsModule = (function () {
         if (info) info.textContent = `${result.values.length} satır`;
     }
 
-    function updateNavCompletion(lessonId) {
-        const btn = document.querySelector(`.nav-topic-btn[data-lesson="${lessonId}"]`);
-        if (btn) {
-            btn.classList.add('completed');
-            const check = btn.querySelector('.topic-check');
-            if (check) check.textContent = '✓';
-        }
-    }
+    // App.updateProgress() zaten DOM güncellemelerini yaptığı için bu fonksiyona gerek kalmadı.
 
     return {
         init, getAllLessons, getLessonById, loadLesson,

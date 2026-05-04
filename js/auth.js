@@ -230,8 +230,10 @@ const AuthModule = (function () {
             const doc = await db.collection('users').doc(currentUser.uid).get();
             if (doc.exists) {
                 const cloudCompleted = doc.data().completedLessons || [];
+                const cloudAssisted = doc.data().assistedLessons || [];
                 // Yerel localStorage'a yaz
                 localStorage.setItem('sql_egitim_progress', JSON.stringify(cloudCompleted));
+                localStorage.setItem('sql_egitim_assisted', JSON.stringify(cloudAssisted));
                 // Arayüzü güncelle
                 if (typeof ProgressTracker !== 'undefined') ProgressTracker.resetUIOnly();
             }
@@ -240,15 +242,16 @@ const AuthModule = (function () {
         }
     }
 
-    async function saveProgressToCloud(completedLessons) {
+    async function saveProgressToCloud(completedLessons, assistedLessons = []) {
         if (!currentUser) return;
         try {
             await db.collection('users').doc(currentUser.uid).set({
                 completedLessons: completedLessons,
+                assistedLessons: assistedLessons,
                 lastActive: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
         } catch (e) {
-            console.error("İlerleme buluta kaydedilemedi:", e);
+            console.error("İlerleme kaydedilemedi:", e);
         }
     }
 

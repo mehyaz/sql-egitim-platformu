@@ -67,7 +67,12 @@ const App = (function () {
                 <div class="nav-topics">
                     ${topics.map(topic => topic.lessons.map(lesson => {
                         const completed = ProgressTracker.isCompleted(lesson.id);
-                        return `<button class="nav-topic-btn${completed ? ' completed' : ''}" data-lesson="${lesson.id}" onclick="App.openLesson('${lesson.id}')">
+                        const assisted = ProgressTracker.isAssisted(lesson.id);
+                        let statusClass = '';
+                        if (completed && assisted) statusClass = ' assisted';
+                        else if (completed) statusClass = ' completed';
+                        
+                        return `<button class="nav-topic-btn${statusClass}" data-lesson="${lesson.id}" onclick="App.openLesson('${lesson.id}')">
                             <span class="topic-check">${completed ? '✓' : ''}</span>
                             <span>${lesson.id} ${lesson.title}</span>
                         </button>`;
@@ -166,6 +171,23 @@ const App = (function () {
             const levelEl = document.querySelector(`.nav-level[data-level="${level}"] .level-indicator`);
             if (levelEl) {
                 levelEl.textContent = ProgressTracker.getLevelPercentage(allLessons, level) + '%';
+            }
+        });
+
+        // Update nav topic buttons
+        document.querySelectorAll('.nav-topic-btn').forEach(btn => {
+            const lessonId = btn.getAttribute('data-lesson');
+            if (lessonId) {
+                const isCompleted = ProgressTracker.isCompleted(lessonId);
+                const isAssisted = ProgressTracker.isAssisted(lessonId);
+                
+                btn.classList.remove('completed', 'assisted');
+                
+                if (isCompleted && isAssisted) btn.classList.add('assisted');
+                else if (isCompleted) btn.classList.add('completed');
+                
+                const check = btn.querySelector('.topic-check');
+                if (check) check.textContent = isCompleted ? '✓' : '';
             }
         });
     }
